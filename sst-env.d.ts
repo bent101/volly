@@ -5,6 +5,14 @@
 
 declare module "sst" {
   export interface Resource {
+    "Database": {
+      "database": string
+      "host": string
+      "password": string
+      "port": number
+      "type": "sst.aws.Postgres"
+      "username": string
+    }
     "MyAuth": {
       "type": "sst.aws.Auth"
       "url": string
@@ -17,6 +25,10 @@ declare module "sst" {
     "MyWeb": {
       "type": "sst.aws.Nextjs"
       "url": string
+    }
+    "Vpc": {
+      "bastion": string
+      "type": "sst.aws.Vpc"
     }
   }
 }

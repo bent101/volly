@@ -6,10 +6,27 @@ import { MemoryStorage } from "@openauthjs/openauth/storage/memory";
 import { subjects } from "./subjects";
 import { Resource } from "sst";
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
+import { db, schema } from "../src/db";
+import { eq } from "drizzle-orm";
+import { theme } from "~/lib/theme";
 
-async function getUser(email: string) {
-  // Get user from database and return user ID
-  return "123";
+async function getUserId(email: string) {
+  const user = await db.query.users.findFirst({
+    where: eq(schema.users.email, email),
+  });
+
+  if (!user) {
+    const newUser = await db
+      .insert(schema.users)
+      .values({
+        id: crypto.randomUUID(),
+        email,
+      })
+      .returning();
+    return newUser[0].id;
+  }
+
+  return user.id;
 }
 
 const app = issuer({
@@ -44,19 +61,13 @@ const app = issuer({
   success: async (ctx, value) => {
     if (value.provider === "code") {
       return ctx.subject("user", {
-        id: await getUser(value.claims.email),
+        id: await getUserId(value.claims.email),
       });
     }
     throw new Error("Invalid provider");
   },
 
-  theme: {
-    primary: "#de3b00",
-    background: {
-      light: "#F0F0F0",
-      dark: "#383838",
-    },
-  },
+  theme,
 });
 
 export const handler = handle(app);

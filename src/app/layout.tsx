@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Mono } from "next/font/google";
 import "./globals.css";
+import { theme } from "~/lib/theme";
+import { CSSProperties } from "react";
 
 const fontSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -23,9 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      style={
+        {
+          "--bg-light": theme.background.light,
+          "--bg-dark": theme.background.dark,
+          "--primary": theme.primary,
+        } as CSSProperties
+      }
+    >
       <body
-        className={`${fontSans.variable} ${fontMono.variable} ${fontSans.className} bg-bg1 text-fg2 antialiased selection:bg-blue-500 selection:text-white`}
+        className={`${fontSans.variable} ${fontMono.variable} ${fontSans.className} bg-bg1 text-fg2 tracking-tight antialiased selection:bg-blue-500 selection:text-white`}
       >
         {children}
       </body>

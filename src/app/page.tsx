@@ -12,10 +12,13 @@ export default async function Home() {
           {subject ? (
             <>
               <p>Welcome, user id {subject.properties.id}</p>
-              <Button onClick={logout}>Logout</Button>
+              <div className="flex gap-2">
+                <Button onClick={logout}>Logout</Button>
+                <Button $intent="secondary">Does nothing</Button>
+              </div>
             </>
           ) : (
-            <div className="flex items-start gap-2">
+            <div className="flex gap-2">
               <Button onClick={login}>Sign in</Button>
               <Button $intent="secondary">Does nothing</Button>
             </div>

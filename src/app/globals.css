@@ -1,28 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --bg1: #ffffff;
-  --bg2: #f0f0f0;
-  --bg3: #ffffff;
+  --bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
+  --bg2: var(--bg-light);
+  --bg3: oklch(from var(--bg-light) calc(l + 0.03) c h);
 
-  --fg1: #222;
-  --fg2: #333;
-  --fg3: #444;
+  --fg1: oklch(from var(--bg-light) calc(l - 0.35) c h);
+  --fg2: oklch(from var(--bg-light) calc(l - 0.5) c h);
+  --fg3: oklch(from var(--bg-light) calc(l - 0.65) c h);
 
   --tint: #000;
-
-  --primary: #de3b00;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg1: #303030;
-    --bg2: #383838;
-    --bg3: #404040;
+    --bg1: oklch(from var(--bg-dark) calc(l - 0.03) c h);
+    --bg2: var(--bg-dark);
+    --bg3: oklch(from var(--bg-dark) calc(l + 0.03) c h);
 
-    --fg1: #ddd;
-    --fg2: #bbb;
-    --fg3: #999;
+    --fg1: oklch(from var(--bg-dark) calc(l + 0.35) c h);
+    --fg2: oklch(from var(--bg-dark) calc(l + 0.5) c h);
+    --fg3: oklch(from var(--bg-dark) calc(l + 0.65) c h);
 
     --tint: #fffa;
   }
@@ -45,6 +43,6 @@
   --font-mono: var(--font-noto-sans-mono);
 }
 
-:where(*) {
+* {
   @apply border-tint/10;
 }
