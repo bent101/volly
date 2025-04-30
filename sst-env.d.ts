@@ -9,6 +9,11 @@ declare module "sst" {
       "type": "sst.aws.Auth"
       "url": string
     }
+    "MyEmail": {
+      "configSet": string
+      "sender": string
+      "type": "sst.aws.Email"
+    }
     "MyWeb": {
       "type": "sst.aws.Nextjs"
       "url": string

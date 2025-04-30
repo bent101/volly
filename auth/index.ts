@@ -4,6 +4,8 @@ import { CodeUI } from "@openauthjs/openauth/ui/code";
 import { CodeProvider } from "@openauthjs/openauth/provider/code";
 import { MemoryStorage } from "@openauthjs/openauth/storage/memory";
 import { subjects } from "./subjects";
+import { Resource } from "sst";
+import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 
 async function getUser(email: string) {
   // Get user from database and return user ID
@@ -18,8 +20,23 @@ const app = issuer({
   providers: {
     code: CodeProvider(
       CodeUI({
-        sendCode: async (email, code) => {
-          console.log(email, code);
+        sendCode: async ({ email }, code) => {
+          const client = new SESv2Client();
+
+          await client.send(
+            new SendEmailCommand({
+              FromEmailAddress: Resource.MyEmail.sender,
+              Destination: {
+                ToAddresses: [email],
+              },
+              Content: {
+                Simple: {
+                  Subject: { Data: "Your code" },
+                  Body: { Text: { Data: `code: ${code}` } },
+                },
+              },
+            }),
+          );
         },
       }),
     ),
