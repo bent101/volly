@@ -32,6 +32,14 @@ const app = issuer({
     }
     throw new Error("Invalid provider");
   },
+
+  theme: {
+    primary: "#de3b00",
+    background: {
+      light: "#F0F0F0",
+      dark: "#383838",
+    },
+  },
 });
 
 export const handler = handle(app);

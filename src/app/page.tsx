@@ -1,43 +1,27 @@
+import { Button } from "~/components/ui/button";
 import { auth, login, logout } from "~/lib/actions";
 
 export default async function Home() {
   const subject = await auth();
 
   return (
-    <div>
-      <main>
-        <ol>
+    <div className="bg-bg2 flex h-screen overflow-hidden">
+      <div className="bg-bg1 w-80 p-4">sidebar</div>
+      <div className="flex-1 p-4">
+        <div className="bg-bg3 rounded-xl border p-4 shadow-xs">
           {subject ? (
             <>
-              <li className="p-4 text-blue-500">
-                Logged in as <code>{subject.properties.id}</code>.
-              </li>
-              <li>
-                And then check out <code>app/page.tsx</code>.
-              </li>
+              <p>Welcome, user id {subject.properties.id}</p>
+              <Button onClick={logout}>Logout</Button>
             </>
           ) : (
-            <>
-              <li>Login with your email and password.</li>
-              <li>
-                And then check out <code>app/page.tsx</code>.
-              </li>
-            </>
-          )}
-        </ol>
-
-        <div>
-          {subject ? (
-            <form action={logout}>
-              <button>Logout</button>
-            </form>
-          ) : (
-            <form action={login}>
-              <button>Login with OpenAuth</button>
-            </form>
+            <div className="flex items-start gap-2">
+              <Button onClick={login}>Sign in</Button>
+              <Button $intent="secondary">Does nothing</Button>
+            </div>
           )}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
