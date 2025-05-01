@@ -1,28 +1,39 @@
-import { Button } from "~/components/ui/button";
-import { auth, login, logout } from "~/lib/actions";
+"use client";
 
-export default async function Home() {
-  const subject = await auth();
+import { Command, MagnifyingGlass } from "phosphor-react";
+import { useUserId } from "~/components/AuthLayout";
+import { Button } from "~/components/ui/button";
+import { logout } from "~/lib/actions";
+
+export default function Home() {
+  const userId = useUserId();
 
   return (
     <div className="bg-bg2 flex h-screen overflow-hidden">
-      <div className="bg-bg1 w-80 p-4">sidebar</div>
+      <div className="bg-bg1 w-80 p-4">
+        <div className="space-y-2">
+          <Button $intent={"secondary"} className="text-fg3 w-full">
+            <MagnifyingGlass />
+            Search
+            <div className="flex-1" />
+            <div className="flex items-center">
+              <Command />
+              <div className="font-mono text-base">K</div>
+            </div>
+          </Button>
+        </div>
+      </div>
       <div className="flex-1 p-4">
         <div className="bg-bg3 rounded-xl border p-4 shadow-xs">
-          {subject ? (
-            <>
-              <p>Welcome, user id {subject.properties.id}</p>
-              <div className="flex gap-2">
-                <Button onClick={logout}>Logout</Button>
-                <Button $intent="secondary">Does nothing</Button>
-              </div>
-            </>
-          ) : (
-            <div className="flex gap-2">
-              <Button onClick={login}>Sign in</Button>
-              <Button $intent="secondary">Does nothing</Button>
-            </div>
-          )}
+          <p>
+            Welcome, user id <code className="text-fg1">{userId}</code>
+          </p>
+          <p className="text-fg1 text-lg font-medium">Volly</p>
+          <p>A simple way to track your volleyball stats</p>
+
+          <div className="flex gap-2">
+            <Button onClick={logout}>Log out</Button>
+          </div>
         </div>
       </div>
     </div>
