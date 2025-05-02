@@ -1,6 +1,15 @@
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { ANYONE_CAN_DO_ANYTHING, definePermissions } from "@rocicorp/zero";
+import { schema as genSchema, Schema } from "./schema.gen";
 
-export const users = pgTable("users", {
-  id: text("id").primaryKey(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-});
+export const schema = genSchema.default; // idk why it puts everything in default
+
+export const permissions = definePermissions<unknown, Schema["default"]>(
+  schema,
+  () => {
+    return {
+      users: ANYONE_CAN_DO_ANYTHING,
+      tags: ANYONE_CAN_DO_ANYTHING,
+      tagsOnUsers: ANYONE_CAN_DO_ANYTHING,
+    };
+  },
+);

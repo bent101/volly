@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Mono } from "next/font/google";
-import { theme } from "~/lib/theme";
 import { CSSProperties } from "react";
-import { auth } from "~/lib/actions";
-import { AuthLayout } from "../components/AuthLayout";
+import { theme } from "~/lib/theme";
+import { InnerRootLayout } from "../components/InnerRootLayout";
+
 import "./globals.css";
 
 const fontSans = Noto_Sans({
@@ -26,8 +26,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const subject = await auth();
-
   return (
     <html
       lang="en"
@@ -40,9 +38,9 @@ export default async function RootLayout({
       }
     >
       <body
-        className={`${fontSans.variable} ${fontMono.variable} ${fontSans.className} bg-bg1 text-fg2 font-medium tracking-tight antialiased selection:bg-blue-500 selection:text-white`}
+        className={`${fontSans.variable} ${fontMono.variable} ${fontSans.className} bg-bg1 text-fg2 font-medium antialiased selection:bg-blue-500 selection:text-white`}
       >
-        <AuthLayout subject={subject}>{children}</AuthLayout>
+        <InnerRootLayout>{children}</InnerRootLayout>
       </body>
     </html>
   );

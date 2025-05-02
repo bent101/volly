@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light dark;
+
   --bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
   --bg2: var(--bg-light);
   --bg3: oklch(from var(--bg-light) calc(l + 0.03) c h);
 
-  --fg1: rgb(from oklch(from var(--bg-light) calc(l - 0.8) c h) r g b);
-  --fg2: oklch(from var(--bg-light) calc(l - 0.55) c h);
+  --fg1: oklch(from var(--bg-light) calc(l - 0.7) c h);
+  --fg2: oklch(from var(--bg-light) calc(l - 0.5) c h);
   --fg3: oklch(from var(--bg-light) calc(l - 0.3) c h);
 
   --tint: #000;
+  --invtint: #fff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,11 +21,12 @@
     --bg2: var(--bg-dark);
     --bg3: oklch(from var(--bg-dark) calc(l + 0.024) c h);
 
-    --fg1: oklch(from var(--bg-dark) calc(l + 0.8) c h);
-    --fg2: oklch(from var(--bg-dark) calc(l + 0.55) c h);
+    --fg1: oklch(from var(--bg-dark) calc(l + 0.6) c h);
+    --fg2: oklch(from var(--bg-dark) calc(l + 0.45) c h);
     --fg3: oklch(from var(--bg-dark) calc(l + 0.3) c h);
 
     --tint: #fff9;
+    --invtint: #000;
   }
 }
 
@@ -38,13 +42,20 @@
   --color-fg3: var(--fg3);
 
   --color-tint: var(--tint);
+  --color-invtint: var(--invtint);
 
   --font-sans: var(--font-noto-sans);
   --font-mono: var(--font-noto-sans-mono);
 }
 
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+  default: 2em;
+}
+
 * {
-  @apply border-tint/10;
+  @apply border-tint/10 overscroll-none;
 
   &:focus-visible {
     @apply outline-none ring ring-2 ring-blue-500;
@@ -53,4 +64,9 @@
 
 svg {
   @apply inline-block size-[1.3em] shrink-0;
+}
+
+button,
+a {
+  @apply cursor-pointer;
 }

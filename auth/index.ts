@@ -6,18 +6,19 @@ import { MemoryStorage } from "@openauthjs/openauth/storage/memory";
 import { subjects } from "./subjects";
 import { Resource } from "sst";
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
-import { db, schema } from "../src/db";
+import { db } from "../src/db/drizzle";
 import { eq } from "drizzle-orm";
 import { theme } from "~/lib/theme";
+import { users } from "~/db/drizzle-schema";
 
 async function getUserId(email: string) {
   const user = await db.query.users.findFirst({
-    where: eq(schema.users.email, email),
+    where: eq(users.email, email),
   });
 
   if (!user) {
     const newUser = await db
-      .insert(schema.users)
+      .insert(users)
       .values({
         id: crypto.randomUUID(),
         email,
@@ -42,7 +43,7 @@ const app = issuer({
 
           await client.send(
             new SendEmailCommand({
-              FromEmailAddress: Resource.MyEmail.sender,
+              FromEmailAddress: Resource.Email.sender,
               Destination: {
                 ToAddresses: [email],
               },

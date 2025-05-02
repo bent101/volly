@@ -2,7 +2,7 @@ import { twc, TwcComponentProps } from "react-twc";
 import { cva, VariantProps } from "class-variance-authority";
 
 const button = cva(
-  "font-medium border cursor-pointer inline-flex items-center gap-[0.7em]",
+  "font-medium border  inline-flex [&>svg]:-mx-[0.3em] items-center gap-[0.7em]",
   {
     variants: {
       $intent: {

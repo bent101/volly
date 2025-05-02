@@ -3,7 +3,7 @@ import { Resource } from "sst";
 
 export default defineConfig({
   dialect: "postgresql",
-  schema: "./src/db/schema.ts",
+  schema: "src/db/drizzle-schema.ts",
   out: "./drizzle",
   dbCredentials: {
     host: Resource.Database.host,
