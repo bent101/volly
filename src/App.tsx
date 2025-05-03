@@ -1,7 +1,6 @@
+import { decodeJwt } from "jose";
 import { useAuth } from "./AuthContext";
 import { Button } from "./components/ui/button";
-import { Card } from "./components/ui/card";
-import { decodeJwt } from "jose";
 
 function App() {
 	const auth = useAuth();
@@ -19,7 +18,7 @@ function App() {
 		<div className="p-4">
 			<pre>
 				{JSON.stringify(
-					{ userId, token: token ? decodeJwt(token) : undefined },
+					{ token: token ? decodeJwt(token) : undefined },
 					null,
 					2,
 				)}
