@@ -1,15 +1,20 @@
 import { decodeJwt } from "jose";
 import { useAuth } from "./AuthContext";
 import { Button } from "./components/ui/button";
+import Logo from "./lib/assets/logo.svg?react";
 
 function App() {
 	const auth = useAuth();
 	if (!auth.loaded) {
-		return <div>loading...</div>;
+		return (
+			<div className="text-tint grid h-screen place-items-center">
+				<Logo className="fill-tint/20 size-32" />
+			</div>
+		);
 	}
 
 	if (!auth.loggedIn) {
-		return <Button onClick={auth.login}>Login</Button>;
+		return <Button onClick={auth.login}>Sign in</Button>;
 	}
 
 	const token = auth.getToken();
@@ -23,7 +28,9 @@ function App() {
 					2,
 				)}
 			</pre>
-			<Button onClick={auth.logout}>Logout</Button>
+			<Button onClick={auth.logout} $intent="secondary">
+				Log out
+			</Button>
 		</div>
 	);
 }

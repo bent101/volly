@@ -1,76 +1,72 @@
 @import "tailwindcss";
 
 :root {
-  @apply scheme-light-dark bg-bg1 text-fg2 font-medium antialiased selection:bg-blue-500 selection:text-white;
+	@apply bg-bg1 text-fg2 font-medium antialiased scheme-light-dark selection:bg-blue-500 selection:text-white;
 
-  --primary: hsl(16, 100%, 44%);
-  --bg-light: hsl(0, 0%, 98%);
-  --bg-dark: hsl(240, 4%, 17%);
+	--primary: hsl(16, 100%, 44%);
+	--bg-light: hsl(0, 0%, 98%);
+	--bg-dark: hsl(240, 4%, 17%);
 
-  --bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
-  --bg2: var(--bg-light);
-  --bg3: oklch(from var(--bg-light) calc(l + 0.03) c h);
+	--bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
+	--bg2: var(--bg-light);
+	--bg3: oklch(from var(--bg-light) calc(l + 0.03) c h);
 
-  --fg1: oklch(from var(--bg-light) calc(l - 0.7) c h);
-  --fg2: oklch(from var(--bg-light) calc(l - 0.5) c h);
-  --fg3: oklch(from var(--bg-light) calc(l - 0.3) c h);
+	--fg1: oklch(from var(--bg-light) calc(l - 0.7) c h);
+	--fg2: oklch(from var(--bg-light) calc(l - 0.5) c h);
+	--fg3: oklch(from var(--bg-light) calc(l - 0.3) c h);
 
-  --tint: #000;
-  --invtint: #fff;
+	--tint: #000;
+	--invtint: #fff;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg1: oklch(from var(--bg-dark) calc(l - 0.024) c h);
-    --bg2: var(--bg-dark);
-    --bg3: oklch(from var(--bg-dark) calc(l + 0.024) c h);
+	:root {
+		--bg1: oklch(from var(--bg-dark) calc(l - 0.024) c h);
+		--bg2: var(--bg-dark);
+		--bg3: oklch(from var(--bg-dark) calc(l + 0.024) c h);
 
-    --fg1: oklch(from var(--bg-dark) calc(l + 0.6) c h);
-    --fg2: oklch(from var(--bg-dark) calc(l + 0.45) c h);
-    --fg3: oklch(from var(--bg-dark) calc(l + 0.3) c h);
+		--fg1: oklch(from var(--bg-dark) calc(l + 0.6) c h);
+		--fg2: oklch(from var(--bg-dark) calc(l + 0.45) c h);
+		--fg3: oklch(from var(--bg-dark) calc(l + 0.3) c h);
 
-    --tint: #fff9;
-    --invtint: #000;
-  }
+		--tint: #fff9;
+		--invtint: #000;
+	}
 }
 
 @theme inline {
-  --color-primary: var(--primary);
+	--color-primary: var(--primary);
 
-  --color-bg1: var(--bg1);
-  --color-bg2: var(--bg2);
-  --color-bg3: var(--bg3);
+	--color-bg1: var(--bg1);
+	--color-bg2: var(--bg2);
+	--color-bg3: var(--bg3);
 
-  --color-fg1: var(--fg1);
-  --color-fg2: var(--fg2);
-  --color-fg3: var(--fg3);
+	--color-fg1: var(--fg1);
+	--color-fg2: var(--fg2);
+	--color-fg3: var(--fg3);
 
-  --color-tint: var(--tint);
-  --color-invtint: var(--invtint);
+	--color-tint: var(--tint);
+	--color-invtint: var(--invtint);
 
-  --font-sans: var(--font-noto-sans);
-  --font-mono: var(--font-noto-sans-mono);
+	--font-sans: var(--font-noto-sans);
+	--font-mono: var(--font-noto-sans-mono);
 }
 
 @property --tw-leading {
-  syntax: "*";
-  inherits: false;
-  default: 2em;
+	syntax: "*";
+	inherits: false;
+	default: 2em;
 }
 
 * {
-  @apply border-tint/10 overscroll-none;
+	@apply border-tint/10 overscroll-none;
 
-  &:focus-visible {
-    @apply outline-none ring ring-2 ring-blue-500;
-  }
-}
-
-svg {
-  @apply inline-block size-[1.3em] shrink-0;
+	&:focus-visible {
+		@apply ring ring-2 ring-blue-500 outline-none;
+	}
 }
 
 button,
 a {
-  @apply cursor-pointer;
+	@apply cursor-pointer;
 }

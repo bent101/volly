@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const [loaded, setLoaded] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
 	const token = useRef<string | undefined>(
-		sessionStorage.getItem("access") || undefined,
+		localStorage.getItem("access") || undefined,
 	);
 
 	useEffect(() => {
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}
 
 	async function refreshTokens() {
-		const refresh = sessionStorage.getItem("refresh");
+		const refresh = localStorage.getItem("refresh");
 		if (!refresh) return;
 		const next = await client.refresh(refresh, {
 			access: token.current,
@@ -69,8 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		if (next.err) return;
 		if (!next.tokens) return token.current;
 
-		sessionStorage.setItem("refresh", next.tokens.refresh);
-		sessionStorage.setItem("access", next.tokens.access);
+		localStorage.setItem("refresh", next.tokens.refresh);
+		localStorage.setItem("access", next.tokens.access);
 		token.current = next.tokens.access;
 
 		return next.tokens.access;
@@ -84,13 +84,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		const { challenge, url } = await client.authorize(location.origin, "code", {
 			pkce: true,
 		});
-		sessionStorage.setItem("challenge", JSON.stringify(challenge));
+		localStorage.setItem("challenge", JSON.stringify(challenge));
 		location.href = url;
 	}
 
 	async function callback(code: string, state: string) {
 		console.log("callback", code, state);
-		const challenge = JSON.parse(sessionStorage.getItem("challenge")!);
+		const challenge = JSON.parse(localStorage.getItem("challenge")!);
 		if (code) {
 			if (state === challenge.state && challenge.verifier) {
 				const exchanged = await client.exchange(
@@ -100,8 +100,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				);
 				if (!exchanged.err) {
 					token.current = exchanged.tokens?.access;
-					sessionStorage.setItem("access", exchanged.tokens.access);
-					sessionStorage.setItem("refresh", exchanged.tokens.refresh);
+					localStorage.setItem("access", exchanged.tokens.access);
+					localStorage.setItem("refresh", exchanged.tokens.refresh);
 				}
 			}
 			window.location.replace("/");
@@ -109,8 +109,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}
 
 	function logout() {
-		sessionStorage.removeItem("refresh");
-		sessionStorage.removeItem("access");
+		localStorage.removeItem("refresh");
+		localStorage.removeItem("access");
 		token.current = undefined;
 
 		window.location.replace("/");

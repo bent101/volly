@@ -23,119 +23,119 @@ import type { default as DrizzleConfigSchema } from "../../drizzle-zero.config";
  * This type is auto-generated from your Drizzle schema definition.
  */
 export const schema = {
-  default: {
-    tables: {
-      tags: {
-        name: "tags",
-        columns: {
-          id: {
-            type: "string",
-            optional: false,
-            customType:
-              null as (typeof DrizzleConfigSchema)["default"]["tables"]["tags"]["columns"]["id"]["customType"],
-          },
-          name: {
-            type: "string",
-            optional: false,
-            customType:
-              null as (typeof DrizzleConfigSchema)["default"]["tables"]["tags"]["columns"]["name"]["customType"],
-          },
-        },
-        primaryKey: ["id"],
-      },
-      tagsOnUsers: {
-        name: "tagsOnUsers",
-        columns: {
-          userId: {
-            type: "string",
-            optional: true,
-            customType:
-              null as (typeof DrizzleConfigSchema)["default"]["tables"]["tagsOnUsers"]["columns"]["userId"]["customType"],
-          },
-          tagId: {
-            type: "string",
-            optional: true,
-            customType:
-              null as (typeof DrizzleConfigSchema)["default"]["tables"]["tagsOnUsers"]["columns"]["tagId"]["customType"],
-          },
-        },
-        primaryKey: ["userId", "tagId"],
-        serverName: "tags_on_users",
-      },
-      users: {
-        name: "users",
-        columns: {
-          id: {
-            type: "string",
-            optional: false,
-            customType:
-              null as (typeof DrizzleConfigSchema)["default"]["tables"]["users"]["columns"]["id"]["customType"],
-          },
-          email: {
-            type: "string",
-            optional: false,
-            customType:
-              null as (typeof DrizzleConfigSchema)["default"]["tables"]["users"]["columns"]["email"]["customType"],
-          },
-        },
-        primaryKey: ["id"],
-      },
-    },
-    relationships: {
-      users: {
-        userTags: [
-          {
-            sourceField: ["id"],
-            destField: ["userId"],
-            destSchema: "tagsOnUsers",
-            cardinality: "many",
-          },
-          {
-            sourceField: ["tagId"],
-            destField: ["id"],
-            destSchema: "tags",
-            cardinality: "many",
-          },
-        ],
-        tags: [
-          {
-            sourceField: ["id"],
-            destField: ["userId"],
-            destSchema: "tagsOnUsers",
-            cardinality: "many",
-          },
-        ],
-      },
-      tagsOnUsers: {
-        user: [
-          {
-            sourceField: ["userId"],
-            destField: ["id"],
-            destSchema: "users",
-            cardinality: "one",
-          },
-        ],
-        tag: [
-          {
-            sourceField: ["tagId"],
-            destField: ["id"],
-            destSchema: "tags",
-            cardinality: "one",
-          },
-        ],
-      },
-      tags: {
-        users: [
-          {
-            sourceField: ["id"],
-            destField: ["tagId"],
-            destSchema: "tagsOnUsers",
-            cardinality: "many",
-          },
-        ],
-      },
-    },
-  },
+	default: {
+		tables: {
+			tags: {
+				name: "tags",
+				columns: {
+					id: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tags"]["columns"]["id"]["customType"],
+					},
+					name: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tags"]["columns"]["name"]["customType"],
+					},
+				},
+				primaryKey: ["id"],
+			},
+			tagsOnUsers: {
+				name: "tagsOnUsers",
+				columns: {
+					userId: {
+						type: "string",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tagsOnUsers"]["columns"]["userId"]["customType"],
+					},
+					tagId: {
+						type: "string",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tagsOnUsers"]["columns"]["tagId"]["customType"],
+					},
+				},
+				primaryKey: ["userId", "tagId"],
+				serverName: "tags_on_users",
+			},
+			users: {
+				name: "users",
+				columns: {
+					id: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["default"]["tables"]["users"]["columns"]["id"]["customType"],
+					},
+					email: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["default"]["tables"]["users"]["columns"]["email"]["customType"],
+					},
+				},
+				primaryKey: ["id"],
+			},
+		},
+		relationships: {
+			users: {
+				userTags: [
+					{
+						sourceField: ["id"],
+						destField: ["userId"],
+						destSchema: "tagsOnUsers",
+						cardinality: "many",
+					},
+					{
+						sourceField: ["tagId"],
+						destField: ["id"],
+						destSchema: "tags",
+						cardinality: "many",
+					},
+				],
+				tags: [
+					{
+						sourceField: ["id"],
+						destField: ["userId"],
+						destSchema: "tagsOnUsers",
+						cardinality: "many",
+					},
+				],
+			},
+			tagsOnUsers: {
+				user: [
+					{
+						sourceField: ["userId"],
+						destField: ["id"],
+						destSchema: "users",
+						cardinality: "one",
+					},
+				],
+				tag: [
+					{
+						sourceField: ["tagId"],
+						destField: ["id"],
+						destSchema: "tags",
+						cardinality: "one",
+					},
+				],
+			},
+			tags: {
+				users: [
+					{
+						sourceField: ["id"],
+						destField: ["tagId"],
+						destSchema: "tagsOnUsers",
+						cardinality: "many",
+					},
+				],
+			},
+		},
+	},
 } as const;
 
 /**
