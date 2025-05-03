@@ -1,7 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light dark;
+  @apply scheme-light-dark bg-bg1 text-fg2 font-medium antialiased selection:bg-blue-500 selection:text-white;
+
+  --primary: hsl(16, 100%, 44%);
+  --bg-light: hsl(0, 0%, 98%);
+  --bg-dark: hsl(240, 4%, 17%);
 
   --bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
   --bg2: var(--bg-light);

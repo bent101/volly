@@ -1,0 +1,16 @@
+import { Button } from "./ui/button";
+import { Command, MagnifyingGlass } from "phosphor-react";
+
+export function SearchButton() {
+	return (
+		<Button $intent={"secondary"} className="text-fg3 w-full">
+			<MagnifyingGlass />
+			Search
+			<div className="flex-1" />
+			<div className="flex items-center">
+				<Command />
+				<div className="font-mono text-base">K</div>
+			</div>
+		</Button>
+	);
+}

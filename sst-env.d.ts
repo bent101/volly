@@ -27,7 +27,7 @@ declare module "sst" {
       "type": "sst.aws.Vpc"
     }
     "Web": {
-      "type": "sst.aws.Nextjs"
+      "type": "sst.aws.StaticSite"
       "url": string
     }
   }
