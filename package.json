@@ -13,6 +13,7 @@
 		"db:studio": "sst shell -- drizzle-kit studio",
 		"zero:generate": "drizzle-zero generate --format --output src/db/schema.gen.ts",
 		"zero:deploy-permissions": "sst shell -- zero-deploy-permissions -p src/db/schema.ts",
+		"pkill": "lsof -i :4852 | grep '(LISTEN)' | awk '{print $2}' | xargs kill -9",
 		"start-db": "docker compose up -d",
 		"start-db-hard": "docker compose up -d --build",
 		"stop-db": "docker compose down",
@@ -21,7 +22,7 @@
 	"dependencies": {
 		"@aws-sdk/client-sesv2": "^3.799.0",
 		"@openauthjs/openauth": "^0.4.3",
-		"@rocicorp/zero": "0.19.2025043001",
+		"@rocicorp/zero": "0.19.2025050203",
 		"@tailwindcss/vite": "^4.1.5",
 		"@types/js-cookie": "^3.0.6",
 		"@vitejs/plugin-react": "^4.4.1",
@@ -34,7 +35,7 @@
 		"nanoid": "^5.1.5",
 		"phosphor-react": "^1.4.1",
 		"postgres": "^3.4.5",
-		"react": "^19.0.0",
+		"react": "^19.1.0",
 		"react-dom": "^19.0.0",
 		"react-twc": "^1.4.2",
 		"sst": "3.13.20",
@@ -51,6 +52,11 @@
 		"tailwindcss": "^4",
 		"typescript": "^5",
 		"vite-plugin-svgr": "^4.3.0"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@rocicorp/zero-sqlite3"
+		]
 	},
 	"packageManager": "pnpm@10.8.1"
 }

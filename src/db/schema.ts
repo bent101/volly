@@ -2,26 +2,21 @@ import {
 	ANYONE_CAN,
 	ANYONE_CAN_DO_ANYTHING,
 	definePermissions,
+	Row,
 } from "@rocicorp/zero";
-import { schema as genSchema, Schema } from "./schema.gen";
+import { schema as genSchema } from "./schema.gen";
+import { DecodedJWT } from "../auth/subjects";
 
 export const schema = genSchema.default; // idk why it puts everything in default
+export type Schema = typeof schema;
+export type User = Row<typeof schema.tables.users>;
 
-export const permissions = definePermissions<
-	{ subject: { id: string } },
-	Schema["default"]
->(schema, () => {
+export const permissions = definePermissions<DecodedJWT, Schema>(schema, () => {
 	return {
 		users: ANYONE_CAN_DO_ANYTHING,
 		tags: {
 			row: {
-				select: [
-					(authData, eb) => {
-						return eb.exists("users", (q) =>
-							q.where("userId", "=", "9b7b0772-e29b-4b8e-b9ff-85278d529dce"),
-						);
-					},
-				],
+				select: ANYONE_CAN,
 				insert: ANYONE_CAN,
 				update: {
 					preMutation: ANYONE_CAN,
@@ -34,7 +29,7 @@ export const permissions = definePermissions<
 			row: {
 				select: [
 					(authData, eb) => {
-						return eb.cmp("userId", "=", authData.subject.id);
+						return eb.cmp("userId", "=", authData.properties.userId);
 					},
 				],
 			},

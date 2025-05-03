@@ -9,6 +9,7 @@ import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { db } from "../db/drizzle";
 import { eq } from "drizzle-orm";
 import { users } from "../db/drizzle-schema";
+import { nanoid } from "nanoid";
 
 async function getUserId(email: string) {
 	const user = await db.query.users.findFirst({
@@ -19,7 +20,7 @@ async function getUserId(email: string) {
 		const newUser = await db
 			.insert(users)
 			.values({
-				id: crypto.randomUUID(),
+				id: nanoid(),
 				email,
 			})
 			.returning();

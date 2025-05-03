@@ -1,38 +1,16 @@
-import { decodeJwt } from "jose";
-import { useAuth } from "./AuthContext";
-import { Button } from "./components/ui/button";
-import Logo from "./lib/assets/logo.svg?react";
+import { AuthProvider } from "./context/auth";
+import { UserProvider } from "./context/user";
+import { ZeroProvider } from "./context/zero";
+import { Home } from "./routes";
 
-function App() {
-	const auth = useAuth();
-	if (!auth.loaded) {
-		return (
-			<div className="text-tint grid h-screen place-items-center">
-				<Logo className="fill-tint/20 size-32" />
-			</div>
-		);
-	}
-
-	if (!auth.loggedIn) {
-		return <Button onClick={auth.login}>Sign in</Button>;
-	}
-
-	const token = auth.getToken();
-
+export default function App() {
 	return (
-		<div className="p-4">
-			<pre>
-				{JSON.stringify(
-					{ token: token ? decodeJwt(token) : undefined },
-					null,
-					2,
-				)}
-			</pre>
-			<Button onClick={auth.logout} $intent="secondary">
-				Log out
-			</Button>
-		</div>
+		<AuthProvider>
+			<ZeroProvider>
+				<UserProvider>
+					<Home />
+				</UserProvider>
+			</ZeroProvider>
+		</AuthProvider>
 	);
 }
-
-export default App;

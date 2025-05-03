@@ -15,10 +15,9 @@ const client = createClient({
 
 interface AuthContextType {
 	loaded: boolean;
-	loggedIn: boolean;
 	logout: () => void;
 	login: () => Promise<void>;
-	getToken: () => string | undefined;
+	token: string | undefined;
 }
 
 const AuthContext = createContext({} as AuthContextType);
@@ -26,8 +25,7 @@ const AuthContext = createContext({} as AuthContextType);
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const initializing = useRef(true);
 	const [loaded, setLoaded] = useState(false);
-	const [loggedIn, setLoggedIn] = useState(false);
-	const token = useRef<string | undefined>(
+	const [token, setToken] = useState<string | undefined>(
 		localStorage.getItem("access") || undefined,
 	);
 
@@ -51,12 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	async function auth() {
-		const token = await refreshTokens();
-
-		if (token) {
-			setLoggedIn(true);
-		}
-
+		await refreshTokens();
 		setLoaded(true);
 	}
 
@@ -64,20 +57,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		const refresh = localStorage.getItem("refresh");
 		if (!refresh) return;
 		const next = await client.refresh(refresh, {
-			access: token.current,
+			access: token,
 		});
 		if (next.err) return;
-		if (!next.tokens) return token.current;
+		if (!next.tokens) return token;
 
 		localStorage.setItem("refresh", next.tokens.refresh);
 		localStorage.setItem("access", next.tokens.access);
-		token.current = next.tokens.access;
+		setToken(next.tokens.access);
 
 		return next.tokens.access;
-	}
-
-	function getToken() {
-		return token.current;
 	}
 
 	async function login() {
@@ -99,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 					challenge.verifier,
 				);
 				if (!exchanged.err) {
-					token.current = exchanged.tokens?.access;
+					setToken(exchanged.tokens?.access);
 					localStorage.setItem("access", exchanged.tokens.access);
 					localStorage.setItem("refresh", exchanged.tokens.refresh);
 				}
@@ -111,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	function logout() {
 		localStorage.removeItem("refresh");
 		localStorage.removeItem("access");
-		token.current = undefined;
+		setToken(undefined);
 
 		window.location.replace("/");
 	}
@@ -122,8 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				login,
 				logout,
 				loaded,
-				loggedIn,
-				getToken,
+				token,
 			}}
 		>
 			{children}
