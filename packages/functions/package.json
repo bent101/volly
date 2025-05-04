@@ -1,0 +1,26 @@
+{
+	"name": "@volly/functions",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@volly/db": "*",
+		"sst": "*",
+		"@aws-sdk/client-sesv2": "^3.799.0",
+		"@openauthjs/openauth": "^0.4.3",
+		"drizzle-orm": "^0.43.1",
+		"hono": "^4.7.8",
+		"nanoid": "^5.1.5",
+		"valibot": "^1.0.0"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"drizzle-kit": "^0.31.0",
+		"prettier": "^3.5.3",
+		"prettier-plugin-tailwindcss": "^0.6.11",
+		"tailwindcss": "^4",
+		"typescript": "^5",
+		"vite-plugin-svgr": "^4.3.0"
+	}
+}

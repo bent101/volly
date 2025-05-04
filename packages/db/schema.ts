@@ -5,7 +5,7 @@ import {
 	Row,
 } from "@rocicorp/zero";
 import { schema as genSchema } from "./schema.gen";
-import { DecodedJWT } from "../auth/subjects";
+import { DecodedJWT } from "@volly/functions/auth/subjects";
 
 export const schema = genSchema.default; // idk why it puts everything in default
 export type Schema = typeof schema;

@@ -1,10 +1,10 @@
 import { useAuth } from "./auth";
 import { useZero } from "./zero";
-import { User } from "../db/schema";
+import { User } from "@volly/db/schema";
 import { createContext, useContext } from "react";
 import { useQuery } from "@rocicorp/zero/react";
 import { decodeJwt } from "jose";
-import { DecodedJWT } from "../auth/subjects";
+import { DecodedJWT } from "@volly/functions/auth/subjects";
 import { SplashScreen } from "../components/SplashScreen";
 
 const UserContext = createContext<User | null>(null);
@@ -22,9 +22,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 		return <SplashScreen />;
 	}
 
-	if (!user) {
-		return <>User not found for id {userID}</>;
-	}
+	if (!user) return auth.logout();
 
 	return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }

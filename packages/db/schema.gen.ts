@@ -16,7 +16,7 @@
  * ------------------------------------------------------------
  */
 
-import type { default as DrizzleConfigSchema } from "../../drizzle-zero.config";
+import type { default as DrizzleConfigSchema } from "./drizzle-zero.config";
 
 /**
  * The Zero schema object.

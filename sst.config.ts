@@ -26,12 +26,6 @@ export default $config({
 			},
 		});
 
-		new sst.x.DevCommand("DockerCompose", {
-			dev: {
-				command: "npm run start-db",
-			},
-		});
-
 		const dbConnectionString = $interpolate`postgresql://${db.username}:${db.password}@${db.host}:${db.port}/${db.database}`;
 
 		const email = new sst.aws.Email("Email", {
@@ -40,7 +34,7 @@ export default $config({
 
 		const auth = new sst.aws.Auth("Auth", {
 			issuer: {
-				handler: "src/auth/index.handler",
+				handler: "packages/functions/auth/index.handler",
 				link: [email, db],
 			},
 		});
@@ -48,7 +42,7 @@ export default $config({
 		new sst.x.DevCommand("Studio", {
 			link: [db],
 			dev: {
-				command: "npx drizzle-kit studio",
+				command: "npm run db:studio -w @volly/db",
 			},
 		});
 
@@ -72,7 +66,7 @@ export default $config({
 			new sst.x.DevCommand("ZeroDev", {
 				environment: zeroEnv,
 				dev: {
-					command: "npx zero-cache-dev -p src/db/schema.ts",
+					command: "npx zero-cache-dev -p packages/db/schema.ts",
 				},
 			});
 		} else {
@@ -176,12 +170,17 @@ export default $config({
 		new sst.aws.StaticSite("Web", {
 			build: {
 				output: "dist",
-				command: "npm run build",
+				command: "npm run build -w @volly/web",
+			},
+			dev: {
+				command: "npm run dev -w @volly/web",
 			},
 			environment: {
 				VITE_ZERO_CACHE_URL: zeroCacheUrl,
 				VITE_AUTH_ISSUER_URL: auth.url,
 			},
 		});
+
+		return { zeroCacheUrl };
 	},
 });

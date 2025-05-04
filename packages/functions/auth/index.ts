@@ -6,10 +6,10 @@ import { MemoryStorage } from "@openauthjs/openauth/storage/memory";
 import { subjects } from "./subjects";
 import { Resource } from "sst";
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
-import { db } from "../db/drizzle";
 import { eq } from "drizzle-orm";
-import { users } from "../db/drizzle-schema";
 import { nanoid } from "nanoid";
+import { db } from "@volly/db/drizzle";
+import { users } from "@volly/db/drizzle-schema";
 
 async function getUserId(email: string) {
 	const user = await db.query.users.findFirst({

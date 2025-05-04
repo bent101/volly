@@ -4,11 +4,10 @@ import {
 	ZeroProvider as ZeroProviderBase,
 } from "@rocicorp/zero/react";
 import { decodeJwt } from "jose";
-import { Schema } from "../db/schema";
-import { DecodedJWT } from "../auth/subjects";
+import { Schema, schema } from "@volly/db/schema";
+import { DecodedJWT } from "@volly/functions/auth/subjects";
 import { Button } from "../components/ui/button";
 import { useAuth } from "./auth";
-import { schema } from "../db/schema";
 import { SplashScreen } from "../components/SplashScreen";
 
 export const useZero = createUseZero<Schema>();
@@ -39,7 +38,6 @@ export function ZeroProvider({ children }: { children: React.ReactNode }) {
 					userID: userID,
 					schema: schema,
 					server: import.meta.env.VITE_ZERO_CACHE_URL,
-					kvStore: import.meta.env.DEV ? "mem" : "idb",
 				})
 			}
 		>
