@@ -25,42 +25,142 @@ import type { default as DrizzleConfigSchema } from "./drizzle-zero.config";
 export const schema = {
 	default: {
 		tables: {
-			tags: {
-				name: "tags",
+			aiResponses: {
+				name: "aiResponses",
 				columns: {
 					id: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tags"]["columns"]["id"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["id"]["customType"],
 					},
-					name: {
+					conversationId: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tags"]["columns"]["name"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["conversationId"]["customType"],
+						serverName: "conversation_id",
+					},
+					parentId: {
+						type: "string",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["parentId"]["customType"],
+						serverName: "parent_id",
+					},
+					content: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["content"]["customType"],
+					},
+					model: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["model"]["customType"],
+					},
+					metadata: {
+						type: "string",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["metadata"]["customType"],
+					},
+					createdAt: {
+						type: "number",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["createdAt"]["customType"],
+						serverName: "created_at",
+					},
+				},
+				primaryKey: ["id"],
+				serverName: "ai_responses",
+			},
+			conversations: {
+				name: "conversations",
+				columns: {
+					id: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["id"]["customType"],
+					},
+					userId: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["userId"]["customType"],
+						serverName: "user_id",
+					},
+					title: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["title"]["customType"],
+					},
+					createdAt: {
+						type: "number",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["createdAt"]["customType"],
+						serverName: "created_at",
+					},
+					updatedAt: {
+						type: "number",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["updatedAt"]["customType"],
+						serverName: "updated_at",
+					},
+					deletedAt: {
+						type: "number",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["deletedAt"]["customType"],
+						serverName: "deleted_at",
 					},
 				},
 				primaryKey: ["id"],
 			},
-			tagsOnUsers: {
-				name: "tagsOnUsers",
+			prompts: {
+				name: "prompts",
 				columns: {
-					userId: {
+					id: {
 						type: "string",
-						optional: true,
+						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tagsOnUsers"]["columns"]["userId"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["id"]["customType"],
 					},
-					tagId: {
+					conversationId: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["conversationId"]["customType"],
+						serverName: "conversation_id",
+					},
+					parentId: {
 						type: "string",
 						optional: true,
 						customType:
-							null as (typeof DrizzleConfigSchema)["default"]["tables"]["tagsOnUsers"]["columns"]["tagId"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["parentId"]["customType"],
+						serverName: "parent_id",
+					},
+					content: {
+						type: "string",
+						optional: false,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["content"]["customType"],
+					},
+					createdAt: {
+						type: "number",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["createdAt"]["customType"],
+						serverName: "created_at",
 					},
 				},
-				primaryKey: ["userId", "tagId"],
-				serverName: "tags_on_users",
+				primaryKey: ["id"],
 			},
 			users: {
 				name: "users",
@@ -69,44 +169,37 @@ export const schema = {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["default"]["tables"]["users"]["columns"]["id"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["id"]["customType"],
 					},
 					email: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["default"]["tables"]["users"]["columns"]["email"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["email"]["customType"],
+					},
+					createdAt: {
+						type: "number",
+						optional: true,
+						customType:
+							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["createdAt"]["customType"],
+						serverName: "created_at",
 					},
 				},
 				primaryKey: ["id"],
 			},
 		},
 		relationships: {
-			users: {
-				userTags: [
+			aiResponses: {
+				conversation: [
 					{
-						sourceField: ["id"],
-						destField: ["userId"],
-						destSchema: "tagsOnUsers",
-						cardinality: "many",
-					},
-					{
-						sourceField: ["tagId"],
+						sourceField: ["conversationId"],
 						destField: ["id"],
-						destSchema: "tags",
-						cardinality: "many",
-					},
-				],
-				tags: [
-					{
-						sourceField: ["id"],
-						destField: ["userId"],
-						destSchema: "tagsOnUsers",
-						cardinality: "many",
+						destSchema: "conversations",
+						cardinality: "one",
 					},
 				],
 			},
-			tagsOnUsers: {
+			conversations: {
 				user: [
 					{
 						sourceField: ["userId"],
@@ -115,21 +208,39 @@ export const schema = {
 						cardinality: "one",
 					},
 				],
-				tag: [
+				prompts: [
 					{
-						sourceField: ["tagId"],
+						sourceField: ["id"],
+						destField: ["conversationId"],
+						destSchema: "prompts",
+						cardinality: "many",
+					},
+				],
+				aiResponses: [
+					{
+						sourceField: ["id"],
+						destField: ["conversationId"],
+						destSchema: "aiResponses",
+						cardinality: "many",
+					},
+				],
+			},
+			prompts: {
+				conversation: [
+					{
+						sourceField: ["conversationId"],
 						destField: ["id"],
-						destSchema: "tags",
+						destSchema: "conversations",
 						cardinality: "one",
 					},
 				],
 			},
-			tags: {
-				users: [
+			users: {
+				conversations: [
 					{
 						sourceField: ["id"],
-						destField: ["tagId"],
-						destSchema: "tagsOnUsers",
+						destField: ["userId"],
+						destSchema: "conversations",
 						cardinality: "many",
 					},
 				],

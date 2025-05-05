@@ -1,8 +1,9 @@
-import { twc, TwcComponentProps } from "react-twc";
 import { cva, VariantProps } from "class-variance-authority";
+import { TwcComponentProps } from "react-twc";
+import { tw } from "../../lib/utils";
 
 const button = cva(
-	"font-medium border  inline-flex [&>svg]:size-[1.3em] [&>svg]:shrink-0 [&>svg]:-mx-[0.3em] items-center gap-[0.7em]",
+	"font-medium border border-tint/10 justify-center inline-flex [&>svg]:size-[1.3em] [&>svg]:shrink-0 [&>svg]:-mx-[0.3em] items-center gap-[0.7em]",
 	{
 		variants: {
 			$intent: {
@@ -24,6 +25,6 @@ const button = cva(
 
 type ButtonProps = TwcComponentProps<"button"> & VariantProps<typeof button>;
 
-export const Button = twc.button<ButtonProps>(({ $intent, $size }) =>
+export const Button = tw.button<ButtonProps>(({ $intent, $size }) =>
 	button({ $intent, $size }),
 );

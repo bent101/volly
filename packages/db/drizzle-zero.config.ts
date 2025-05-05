@@ -1,5 +1,5 @@
 import { drizzleZeroConfig } from "drizzle-zero";
-import * as drizzleSchema from "~/db/drizzle-schema";
+import * as drizzleSchema from "./drizzle-schema";
 
 // Define your configuration file for the CLI
 export default drizzleZeroConfig(drizzleSchema, {
@@ -11,24 +11,35 @@ export default drizzleZeroConfig(drizzleSchema, {
 	// All tables/columns must be defined, but can be set to false to exclude them from the Zero schema.
 	// Column names match your Drizzle schema definitions
 	tables: {
-		// this can be set to false
-		// e.g. user: false,
 		users: {
-			id: true,
+			createdAt: true,
 			email: true,
-		},
-		tags: {
 			id: true,
-			name: true,
 		},
-		tagsOnUsers: {
-			tagId: true,
+		aiResponses: {
+			content: true,
+			createdAt: true,
+			id: true,
+			model: true,
+			conversationId: true,
+			parentId: true,
+			metadata: true,
+		},
+		conversations: {
+			createdAt: true,
+			id: true,
+			title: true,
+			updatedAt: true,
 			userId: true,
+			deletedAt: true,
 		},
-	},
-
-	manyToMany: {
-		users: { userTags: ["tagsOnUsers", "tags"] },
+		prompts: {
+			content: true,
+			createdAt: true,
+			id: true,
+			conversationId: true,
+			parentId: true,
+		},
 	},
 
 	// Specify the casing style to use for the schema.

@@ -7,7 +7,7 @@ import { decodeJwt } from "jose";
 import { DecodedJWT } from "@volly/functions/auth/subjects";
 import { SplashScreen } from "../components/SplashScreen";
 
-const UserContext = createContext<User | null>(null);
+const UserContext = createContext<User>(null as unknown as User);
 export const useUser = () => useContext(UserContext);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {

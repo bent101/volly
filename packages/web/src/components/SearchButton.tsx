@@ -8,7 +8,7 @@ export function SearchButton() {
 			Search
 			<div className="flex-1" />
 			<div className="flex items-center">
-				<Command />
+				<Command className="size-[1.2em]" />
 				<div className="font-mono text-base">K</div>
 			</div>
 		</Button>

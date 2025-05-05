@@ -1,40 +1,77 @@
 import { relations } from "drizzle-orm";
-import { pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+
+const id = text("id").primaryKey();
+const createdAt = timestamp("created_at").notNull().defaultNow();
+const updatedAt = timestamp("updated_at").notNull().defaultNow();
+const deletedAt = timestamp("deleted_at");
 
 export const users = pgTable("users", {
-	id: text().primaryKey(),
-	email: varchar({ length: 255 }).notNull().unique(),
+	id,
+	email: varchar("email", { length: 255 }).notNull().unique(),
+	createdAt,
 });
 
-export const tags = pgTable("tags", {
-	id: text().primaryKey(),
-	name: text().notNull(),
+export const conversations = pgTable("conversations", {
+	id,
+	userId: text("user_id")
+		.notNull()
+		.references(() => users.id),
+	title: varchar("title", { length: 255 }).notNull(),
+	createdAt,
+	updatedAt,
+	deletedAt,
 });
 
-export const tagsOnUsers = pgTable(
-	"tags_on_users",
-	{
-		userId: text().references(() => users.id),
-		tagId: text().references(() => tags.id),
-	},
-	(t) => [primaryKey({ columns: [t.userId, t.tagId] })],
+export const prompts = pgTable("prompts", {
+	id,
+	conversationId: text("conversation_id")
+		.notNull()
+		.references(() => conversations.id),
+	parentId: text("parent_id"),
+	content: text("content").notNull(),
+	createdAt,
+});
+
+export const aiResponses = pgTable("ai_responses", {
+	id,
+	conversationId: text("conversation_id")
+		.notNull()
+		.references(() => conversations.id),
+	parentId: text("parent_id"),
+	content: text("content").notNull(),
+	model: varchar("model", { length: 255 }).notNull(),
+	metadata: text("metadata"),
+	createdAt,
+});
+
+// Relations
+export const usersRelations = relations(users, ({ many }) => ({
+	conversations: many(conversations),
+}));
+
+export const conversationsRelations = relations(
+	conversations,
+	({ one, many }) => ({
+		user: one(users, {
+			fields: [conversations.userId],
+			references: [users.id],
+		}),
+		prompts: many(prompts),
+		aiResponses: many(aiResponses),
+	}),
 );
 
-export const usersRelations = relations(users, ({ many }) => ({
-	tags: many(tagsOnUsers),
-}));
-
-export const tagsRelations = relations(tags, ({ many }) => ({
-	users: many(tagsOnUsers),
-}));
-
-export const tagsOnUsersRelations = relations(tagsOnUsers, ({ one }) => ({
-	user: one(users, {
-		fields: [tagsOnUsers.userId],
-		references: [users.id],
+export const promptsRelations = relations(prompts, ({ one, many }) => ({
+	conversation: one(conversations, {
+		fields: [prompts.conversationId],
+		references: [conversations.id],
 	}),
-	tag: one(tags, {
-		fields: [tagsOnUsers.tagId],
-		references: [tags.id],
+}));
+
+export const aiResponsesRelations = relations(aiResponses, ({ one, many }) => ({
+	conversation: one(conversations, {
+		fields: [aiResponses.conversationId],
+		references: [conversations.id],
 	}),
 }));

@@ -4,7 +4,7 @@
 	@apply bg-bg1 text-fg2 font-medium antialiased scheme-light-dark selection:bg-blue-500 selection:text-white;
 
 	--primary: hsl(16, 100%, 44%);
-	--bg-light: hsl(0, 0%, 98%);
+	--bg-light: hsl(0, 0%, 95%);
 	--bg-dark: hsl(240, 4%, 17%);
 
 	--bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
@@ -21,12 +21,12 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg1: oklch(from var(--bg-dark) calc(l - 0.024) c h);
+		--bg1: oklch(from var(--bg-dark) calc(l - 0.03) c h);
 		--bg2: var(--bg-dark);
-		--bg3: oklch(from var(--bg-dark) calc(l + 0.024) c h);
+		--bg3: oklch(from var(--bg-dark) calc(l + 0.035) c h);
 
-		--fg1: oklch(from var(--bg-dark) calc(l + 0.6) c h);
-		--fg2: oklch(from var(--bg-dark) calc(l + 0.45) c h);
+		--fg1: oklch(from var(--bg-dark) calc(l + 0.7) c h);
+		--fg2: oklch(from var(--bg-dark) calc(l + 0.55) c h);
 		--fg3: oklch(from var(--bg-dark) calc(l + 0.3) c h);
 
 		--tint: #fff9;
@@ -47,26 +47,109 @@
 
 	--color-tint: var(--tint);
 	--color-invtint: var(--invtint);
-
-	--font-sans: var(--font-noto-sans);
-	--font-mono: var(--font-noto-sans-mono);
 }
 
-@property --tw-leading {
-	syntax: "*";
-	inherits: false;
-	default: 2em;
+
+body {
+	@apply overscroll-none;
 }
+
 
 * {
-	@apply border-tint/10 overscroll-none;
+	@apply outline-none ring-0;
+}
+
+button,
+a {
+	@apply cursor-pointer;
 
 	&:focus-visible {
 		@apply ring ring-2 ring-blue-500 outline-none;
 	}
 }
 
-button,
-a {
-	@apply cursor-pointer;
+.markdown {
+
+
+	h1 {
+		@apply text-fg1 text-3xl font-bold mt-6 mb-3;
+	}
+
+	h2 {
+		@apply text-fg1 text-2xl font-bold mt-5 mb-2;
+	}
+
+	h3 {
+		@apply text-fg1 text-xl font-bold mt-4 mb-1;
+	}
+
+	h4 {
+		@apply text-fg2 text-lg font-bold mt-3 mb-2;
+	}
+
+	code {
+		@apply bg-black/10 dark:bg-black/20 inline-block text-[0.8em] text-fg1 rounded-[0.4em] px-[0.3em] py-[0.08em];
+	}
+
+	b,
+	strong {
+		@apply text-fg1;
+	}
+
+
+	p {
+		@apply text-fg2 mb-3;
+	}
+
+
+	a {
+		@apply text-fg1 underline;
+	}
+
+	a:hover {
+		@apply text-fg1/80;
+
+	}
+
+
+	blockquote {
+		@apply border-l-4 pl-4 py-2 text-fg3 border-tint/10 bg-tint/5 italic mb-4;
+	}
+
+	pre code {
+		@apply bg-transparent;
+	}
+
+
+	ul,
+	ol {
+		@apply list-disc pl-5 mb-4 marker:text-fg3;
+	}
+
+	li {
+		@apply mb-2;
+	}
+
+	img {
+		@apply rounded-lg mb-4;
+	}
+
+
+	table {
+		@apply w-full border-collapse mb-4 text-sm;
+	}
+
+	th,
+	td {
+		@apply border border-tint/10 px-2.5 p-1.5;
+	}
+
+	th {
+		@apply bg-tint/5;
+	}
+
+
+	hr {
+		@apply border-t border-tint/10 my-4;
+	}
 }
