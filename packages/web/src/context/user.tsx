@@ -22,7 +22,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 		return <SplashScreen />;
 	}
 
-	if (!user) return auth.logout();
+	if (!user) {
+		auth.logout();
+		return null;
+	}
 
 	return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }

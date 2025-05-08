@@ -9,6 +9,12 @@ export type Prompt = Row<typeof schema.tables.prompts>;
 export type Conversation = Row<typeof schema.tables.conversations>;
 export type AIResponse = Row<typeof schema.tables.aiResponses>;
 
+export type Thread = {
+	rootPrompt: Prompt;
+	prompts: Prompt[];
+	aiResponses: AIResponse[];
+};
+
 export const permissions = definePermissions<DecodedJWT, Schema>(schema, () => {
 	return {
 		users: ANYONE_CAN_DO_ANYTHING,

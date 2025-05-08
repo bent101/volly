@@ -11,6 +11,8 @@ export default $config({
 	},
 
 	async run() {
+		const aiApiKey = new sst.Secret("AIAPIKey");
+
 		const vpc = new sst.aws.Vpc("Vpc", {
 			bastion: true,
 			nat: "managed",
@@ -39,6 +41,17 @@ export default $config({
 			},
 		});
 
+		const ZERO_AUTH_JWKS_URL = $interpolate`${auth.url}/.well-known/jwks.json`;
+
+		const api = new sst.aws.Function("Api", {
+			handler: "packages/functions/api/index.handler",
+			url: true,
+			link: [db],
+			environment: {
+				ZERO_AUTH_JWKS_URL,
+			},
+		});
+
 		new sst.x.DevCommand("Studio", {
 			link: [db],
 			dev: {
@@ -50,9 +63,12 @@ export default $config({
 			? undefined
 			: new sst.aws.Bucket(`ReplicationBucket`);
 
+		const zeroPushUrl = $interpolate`${api.url}zero-push`;
+
 		const zeroEnv = {
+			ZERO_AUTH_JWKS_URL,
 			ZERO_UPSTREAM_DB: dbConnectionString,
-			ZERO_AUTH_JWKS_URL: $interpolate`${auth.url}/.well-known/jwks.json`,
+			ZERO_PUSH_URL: zeroPushUrl,
 			ZERO_REPLICA_FILE: "sync-replica.db",
 			ZERO_IMAGE_URL: `rocicorp/zero:0.19.2025043001`,
 			...(replicationBucket && {
@@ -181,6 +197,6 @@ export default $config({
 			},
 		});
 
-		return { zeroCacheUrl };
+		return { zeroCacheUrl, zeroPushUrl };
 	},
 });

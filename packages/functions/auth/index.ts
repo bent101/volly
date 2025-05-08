@@ -1,15 +1,15 @@
-import { handle } from "hono/aws-lambda";
+import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { issuer } from "@openauthjs/openauth";
-import { CodeUI } from "@openauthjs/openauth/ui/code";
 import { CodeProvider } from "@openauthjs/openauth/provider/code";
 import { MemoryStorage } from "@openauthjs/openauth/storage/memory";
-import { subjects } from "./subjects";
-import { Resource } from "sst";
-import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
-import { eq } from "drizzle-orm";
-import { nanoid } from "nanoid";
+import { CodeUI } from "@openauthjs/openauth/ui/code";
 import { db } from "@volly/db/drizzle";
 import { users } from "@volly/db/drizzle-schema";
+import { eq } from "drizzle-orm";
+import { handle } from "hono/aws-lambda";
+import { nanoid } from "nanoid";
+import { Resource } from "sst";
+import { subjects } from "./subjects";
 
 async function getUserId(email: string) {
 	const user = await db.query.users.findFirst({
@@ -73,10 +73,10 @@ const app = issuer({
 	},
 
 	theme: {
-		primary: "hsl(16, 100%, 44%)",
+		primary: "hsl(16, 75%, 45%)",
 		background: {
-			light: "hsl(0, 0%, 98%)",
-			dark: "hsl(240, 4%, 17%)",
+			light: "hsl(0, 0%, 95%)",
+			dark: "hsl(240, 7%, 17%)",
 		},
 	},
 });

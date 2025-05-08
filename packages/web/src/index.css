@@ -3,9 +3,9 @@
 :root {
 	@apply bg-bg1 text-fg2 font-medium antialiased scheme-light-dark selection:bg-blue-500 selection:text-white;
 
-	--primary: hsl(16, 100%, 44%);
+	--primary: hsl(16, 75%, 45%);
 	--bg-light: hsl(0, 0%, 95%);
-	--bg-dark: hsl(240, 4%, 17%);
+	--bg-dark: hsl(240, 7%, 17%);
 
 	--bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
 	--bg2: var(--bg-light);

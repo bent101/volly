@@ -9,6 +9,8 @@ import { DecodedJWT } from "@volly/functions/auth/subjects";
 import { Button } from "../components/ui/button";
 import { useAuth } from "./auth";
 import { SplashScreen } from "../components/SplashScreen";
+import { createMutators } from "@volly/functions/api/mutators";
+import { useMemo } from "react";
 
 export const useZero = createUseZero<Schema>();
 
@@ -28,20 +30,25 @@ export function ZeroProvider({ children }: { children: React.ReactNode }) {
 		);
 	}
 
-	const userID = decodeJwt<DecodedJWT>(token).sub!;
+	const decodedJwt = decodeJwt<DecodedJWT>(token);
 
-	return (
-		<ZeroProviderBase
-			zero={
-				new Zero({
-					auth: token,
-					userID: userID,
-					schema: schema,
-					server: import.meta.env.VITE_ZERO_CACHE_URL,
-				})
-			}
-		>
-			{children}
-		</ZeroProviderBase>
+	const zero = useMemo(
+		() =>
+			new Zero({
+				auth: token,
+				userID: decodedJwt.sub!,
+				schema: schema,
+				server: import.meta.env.VITE_ZERO_CACHE_URL,
+				mutators: createMutators(decodedJwt),
+			}),
+		[token],
 	);
+
+	zero
+		.inspect()
+		.then((inspector) => inspector.client.queries())
+		.then((queries) => queries.map((q) => JSON.stringify(q.ast, null, 2)))
+		.then(console.log);
+
+	return <ZeroProviderBase zero={zero}>{children}</ZeroProviderBase>;
 }
