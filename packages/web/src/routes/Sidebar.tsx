@@ -43,9 +43,9 @@ export function Sidebar({ conversations }: { conversations: any[] }) {
 					<Plus weight="bold" />
 					New Chat
 				</Button>
-				{conversations.map((conv) => (
-					<SidebarChatButton key={conv.id} conversationId={conv.id}>
-						{conv.title}
+				{conversations.map((conversation) => (
+					<SidebarChatButton key={conversation.id} conversation={conversation}>
+						{conversation.title}
 					</SidebarChatButton>
 				))}
 			</div>

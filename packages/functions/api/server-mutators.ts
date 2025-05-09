@@ -28,78 +28,78 @@ export function createServerMutators(
 			console.log("server prompt", prompt);
 			mutators.createPrompt(tx, { prompt, thread });
 
-			// postCommitTasks.push(async () => {
-			// 	const promptMessages = thread.prompts.map((p) => ({
-			// 		role: "user" as const,
-			// 		content: p.content,
-			// 	}));
+			postCommitTasks.push(async () => {
+				const promptMessages = thread.prompts.map((p) => ({
+					role: "user" as const,
+					content: p.content,
+				}));
 
-			// 	const aiResponseMessages = thread.aiResponses.map((a) => ({
-			// 		role: "assistant" as const,
-			// 		content: a.content,
-			// 	}));
+				const aiResponseMessages = thread.aiResponses.map((a) => ({
+					role: "assistant" as const,
+					content: a.content,
+				}));
 
-			// 	const messages = weaveArrays(promptMessages, aiResponseMessages);
+				const messages = weaveArrays(promptMessages, aiResponseMessages);
 
-			// 	messages.push({
-			// 		role: "user" as const,
-			// 		content: prompt.content,
-			// 	});
+				messages.push({
+					role: "user" as const,
+					content: prompt.content,
+				});
 
-			// 	const { textStream } = streamText({
-			// 		model: openrouter(MODEL),
-			// 		messages: messages,
-			// 	});
+				const { textStream } = streamText({
+					model: openrouter(MODEL),
+					messages: messages,
+				});
 
-			// 	const aiResponseId = nanoid();
+				const aiResponseId = nanoid();
 
-			// 	let cur = "";
-			// 	let isFirst = true;
+				let cur = "";
+				let isFirst = true;
 
-			// 	console.log("createPrompt postCommit", prompt.content, textStream);
+				console.log("createPrompt postCommit", prompt.content, textStream);
 
-			// 	for await (const chunk of textStream) {
-			// 		console.log("createPrompt postCommit chunk", chunk);
-			// 		cur += chunk;
+				for await (const chunk of textStream) {
+					console.log("createPrompt postCommit chunk", chunk);
+					cur += chunk;
 
-			// 		if (isFirst) {
-			// 			isFirst = false;
-			// 			zqlDb.transaction(
-			// 				async (tx) => {
-			// 					tx.mutate.aiResponses.insert({
-			// 						id: aiResponseId,
-			// 						content: cur,
-			// 						createdAt: Date.now(),
-			// 						conversationId: prompt.conversationId,
-			// 						model: MODEL,
-			// 						parentId: prompt.id,
-			// 					});
-			// 				},
-			// 				{
-			// 					clientGroupID: "unused",
-			// 					clientID: "unused",
-			// 					mutationID: 42,
-			// 					upstreamSchema: "unused",
-			// 				},
-			// 			);
-			// 		} else {
-			// 			zqlDb.transaction(
-			// 				async (tx) => {
-			// 					tx.mutate.aiResponses.update({
-			// 						id: aiResponseId,
-			// 						content: cur,
-			// 					});
-			// 				},
-			// 				{
-			// 					clientGroupID: "unused",
-			// 					clientID: "unused",
-			// 					mutationID: 42,
-			// 					upstreamSchema: "unused",
-			// 				},
-			// 			);
-			// 		}
-			// 	}
-			// });
+					if (isFirst) {
+						isFirst = false;
+						zqlDb.transaction(
+							async (tx) => {
+								tx.mutate.aiResponses.insert({
+									id: aiResponseId,
+									content: cur,
+									createdAt: Date.now(),
+									conversationId: prompt.conversationId,
+									model: MODEL,
+									parentId: prompt.id,
+								});
+							},
+							{
+								clientGroupID: "unused",
+								clientID: "unused",
+								mutationID: 42,
+								upstreamSchema: "unused",
+							},
+						);
+					} else {
+						zqlDb.transaction(
+							async (tx) => {
+								tx.mutate.aiResponses.update({
+									id: aiResponseId,
+									content: cur,
+								});
+							},
+							{
+								clientGroupID: "unused",
+								clientID: "unused",
+								mutationID: 42,
+								upstreamSchema: "unused",
+							},
+						);
+					}
+				}
+			});
 		},
 
 		createConversation: async (tx, { id }: { id: string }) => {

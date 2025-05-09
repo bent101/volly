@@ -2,26 +2,27 @@ import { X } from "phosphor-react";
 import { useZero } from "../context/zero";
 import { cn } from "../lib/utils";
 import { useCurConversationId } from "./useCurConversationId";
+import { Conversation } from "@volly/db/schema";
 
 export function SidebarChatButton({
 	children,
-	conversationId,
+	conversation,
 }: {
 	children: React.ReactNode;
-	conversationId: string;
+	conversation: Conversation;
 }) {
 	const z = useZero();
 	const [curConversationId, setCurConversationId] = useCurConversationId();
-	const isActive = curConversationId === conversationId;
+	const isActive = curConversationId === conversation.id;
 
 	return (
 		<div className="group relative">
 			<button
 				className={cn(
-					"peer w-full rounded-md px-3 py-1.5 text-left text-sm font-medium",
+					"peer rounded-md w-full  px-3 py-1.5 text-left text-sm font-medium",
 					isActive ? "bg-bg3 shadow-xs" : "hover:bg-bg3/50",
 				)}
-				onMouseDown={() => setCurConversationId(conversationId)}
+				onMouseDown={() => setCurConversationId(conversation.id)}
 			>
 				{children}
 			</button>
@@ -29,7 +30,7 @@ export function SidebarChatButton({
 				onClick={(e) => {
 					e.stopPropagation();
 					z.mutate.conversations.update({
-						id: conversationId,
+						id: conversation.id,
 						deletedAt: Date.now(),
 					});
 				}}
