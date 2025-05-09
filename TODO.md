@@ -1,4 +1,3 @@
-custom mutator
 tanstack router
 chat titles
 model select, style select, search

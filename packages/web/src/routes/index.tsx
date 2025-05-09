@@ -5,13 +5,13 @@ import { useZero } from "../context/zero";
 import { ChatInput } from "./ChatInput";
 import { PromptSection } from "./PromptSection";
 import { Sidebar } from "./Sidebar";
-import { useCurConversationId } from "./useCurConversationId";
+import { useCurChatId } from "./useCurChatId";
 
-function getCurThread(conversation: {
+function getCurThread(chat: {
 	prompts: readonly Prompt[];
 	aiResponses: readonly AIResponse[];
 }) {
-	const rootPrompt = conversation?.prompts.find((p) => p.parentId === null);
+	const rootPrompt = chat?.prompts.find((p) => p.parentId === null);
 	if (!rootPrompt) {
 		return {
 			rootPrompt: null,
@@ -26,12 +26,12 @@ function getCurThread(conversation: {
 
 	while (true) {
 		prompts.push(cur);
-		const aiResponse: AIResponse | undefined = conversation.aiResponses.find(
+		const aiResponse: AIResponse | undefined = chat.aiResponses.find(
 			(a: AIResponse) => a.parentId === cur.id,
 		);
 		if (!aiResponse) break;
 		aiResponses.push(aiResponse);
-		const childPrompt: Prompt | undefined = conversation.prompts.find(
+		const childPrompt: Prompt | undefined = chat.prompts.find(
 			(p: Prompt) => p.parentId === aiResponse.id,
 		);
 		if (!childPrompt) break;
@@ -44,30 +44,28 @@ function getCurThread(conversation: {
 export function Home() {
 	const z = useZero();
 
-	const [conversations, conversationsResult] = useQuery(
-		z.query.conversations
+	const [chats, chatsResult] = useQuery(
+		z.query.chats
 			.where("deletedAt", "IS", null)
 			.related("aiResponses", (q) => q.orderBy("createdAt", "asc"))
 			.related("prompts", (q) => q.orderBy("createdAt", "asc"))
 			.orderBy("createdAt", "desc"),
 	);
 
-	const [curConversationId] = useCurConversationId();
-	const curConversation = conversations.find(
-		(c) => c.id === curConversationId,
-	)!;
-	const curThread = getCurThread(curConversation);
+	const [curChatId] = useCurChatId();
+	const curChat = chats.find((c) => c.id === curChatId)!;
+	const curThread = getCurThread(curChat);
 
 	return (
 		<div className="bg-bg2 flex h-screen overflow-clip">
-			<Sidebar conversations={conversations} />
+			<Sidebar chats={chats} />
 			<div className="relative flex-1 p-4">
 				<div className="absolute inset-0 overflow-y-auto [scrollbar-gutter:stable_both-edges]">
 					<div className="mx-auto max-w-4xl px-4 pt-16 pb-[calc(100vh-16rem)]">
 						{curThread.rootPrompt && (
 							<PromptSection
-								prompts={conversations.flatMap((c) => c.prompts)}
-								aiResponses={conversations.flatMap((c) => c.aiResponses)}
+								prompts={chats.flatMap((c) => c.prompts)}
+								aiResponses={chats.flatMap((c) => c.aiResponses)}
 								prompt={curThread.rootPrompt}
 							/>
 						)}

@@ -23,7 +23,7 @@ export function ZeroProvider({ children }: { children: React.ReactNode }) {
 
 	if (!token) {
 		return (
-			<div className="grid h-screen place-items-center">
+			<div className="grid h-screen bg-bg2 place-items-center">
 				<Button onClick={auth.login}>Sign in</Button>
 			</div>
 		);

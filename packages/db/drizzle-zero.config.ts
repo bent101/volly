@@ -21,11 +21,11 @@ export default drizzleZeroConfig(drizzleSchema, {
 			createdAt: true,
 			id: true,
 			model: true,
-			conversationId: true,
+			chatId: true,
 			parentId: true,
 			metadata: true,
 		},
-		conversations: {
+		chats: {
 			createdAt: true,
 			id: true,
 			title: true,
@@ -37,7 +37,7 @@ export default drizzleZeroConfig(drizzleSchema, {
 			content: true,
 			createdAt: true,
 			id: true,
-			conversationId: true,
+			chatId: true,
 			parentId: true,
 		},
 	},

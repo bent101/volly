@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { useEffect, useRef, useState } from "react";
 import { useZero } from "../context/zero";
 import { useIsTyping } from "../hooks/useIsTyping";
-import { useCurConversationId } from "./useCurConversationId";
+import { useCurChatId } from "./useCurChatId";
 import { AIResponse, Prompt } from "@volly/db/schema";
 
 export function ChatInput({
@@ -13,16 +13,16 @@ export function ChatInput({
 }) {
 	const z = useZero();
 
-	const [curConversationId] = useCurConversationId();
+	const [curChatId] = useCurChatId();
 	const [curPrompt, setCurPrompt] = useState("");
 	const contentEditableRef = useRef<HTMLDivElement>(null);
 
-	// Focus on conversation switch
+	// Focus on chat switch
 	useEffect(() => {
 		if (contentEditableRef.current) {
 			contentEditableRef.current.focus();
 		}
-	}, [curConversationId, contentEditableRef]);
+	}, [curChatId, contentEditableRef]);
 
 	// Handle typing and focus
 	useIsTyping({
@@ -66,7 +66,7 @@ export function ChatInput({
 					const prompt = {
 						id: nanoid(),
 						content: curPrompt,
-						conversationId: curConversationId!,
+						chatId: curChatId!,
 						createdAt: Date.now(),
 						parentId: lastAIResponse?.id ?? null,
 					};

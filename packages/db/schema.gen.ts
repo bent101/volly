@@ -34,12 +34,12 @@ export const schema = {
 						customType:
 							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["id"]["customType"],
 					},
-					conversationId: {
+					chatId: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["conversationId"]["customType"],
-						serverName: "conversation_id",
+							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["chatId"]["customType"],
+						serverName: "chat_id",
 					},
 					parentId: {
 						type: "string",
@@ -77,47 +77,47 @@ export const schema = {
 				primaryKey: ["id"],
 				serverName: "ai_responses",
 			},
-			conversations: {
-				name: "conversations",
+			chats: {
+				name: "chats",
 				columns: {
 					id: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["id"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["id"]["customType"],
 					},
 					userId: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["userId"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["userId"]["customType"],
 						serverName: "user_id",
 					},
 					title: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["title"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["title"]["customType"],
 					},
 					createdAt: {
 						type: "number",
 						optional: true,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["createdAt"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["createdAt"]["customType"],
 						serverName: "created_at",
 					},
 					updatedAt: {
 						type: "number",
 						optional: true,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["updatedAt"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["updatedAt"]["customType"],
 						serverName: "updated_at",
 					},
 					deletedAt: {
 						type: "number",
 						optional: true,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["conversations"]["columns"]["deletedAt"]["customType"],
+							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["deletedAt"]["customType"],
 						serverName: "deleted_at",
 					},
 				},
@@ -132,12 +132,12 @@ export const schema = {
 						customType:
 							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["id"]["customType"],
 					},
-					conversationId: {
+					chatId: {
 						type: "string",
 						optional: false,
 						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["conversationId"]["customType"],
-						serverName: "conversation_id",
+							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["chatId"]["customType"],
+						serverName: "chat_id",
 					},
 					parentId: {
 						type: "string",
@@ -190,16 +190,16 @@ export const schema = {
 		},
 		relationships: {
 			aiResponses: {
-				conversation: [
+				chat: [
 					{
-						sourceField: ["conversationId"],
+						sourceField: ["chatId"],
 						destField: ["id"],
-						destSchema: "conversations",
+						destSchema: "chats",
 						cardinality: "one",
 					},
 				],
 			},
-			conversations: {
+			chats: {
 				user: [
 					{
 						sourceField: ["userId"],
@@ -211,7 +211,7 @@ export const schema = {
 				prompts: [
 					{
 						sourceField: ["id"],
-						destField: ["conversationId"],
+						destField: ["chatId"],
 						destSchema: "prompts",
 						cardinality: "many",
 					},
@@ -219,28 +219,28 @@ export const schema = {
 				aiResponses: [
 					{
 						sourceField: ["id"],
-						destField: ["conversationId"],
+						destField: ["chatId"],
 						destSchema: "aiResponses",
 						cardinality: "many",
 					},
 				],
 			},
 			prompts: {
-				conversation: [
+				chat: [
 					{
-						sourceField: ["conversationId"],
+						sourceField: ["chatId"],
 						destField: ["id"],
-						destSchema: "conversations",
+						destSchema: "chats",
 						cardinality: "one",
 					},
 				],
 			},
 			users: {
-				conversations: [
+				chats: [
 					{
 						sourceField: ["id"],
 						destField: ["userId"],
-						destSchema: "conversations",
+						destSchema: "chats",
 						cardinality: "many",
 					},
 				],

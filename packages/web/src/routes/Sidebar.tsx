@@ -7,19 +7,18 @@ import { useAuth } from "../context/auth";
 import { useUser } from "../context/user";
 import { useZero } from "../context/zero";
 import { SidebarChatButton } from "./SidebarChatButton";
-import { useCurConversationId } from "./useCurConversationId";
+import { useCurChatId } from "./useCurChatId";
 
-export function Sidebar({ conversations }: { conversations: any[] }) {
+export function Sidebar({ chats }: { chats: any[] }) {
 	const z = useZero();
 	const user = useUser();
 	const auth = useAuth();
-	const [curConversationId, setCurConversationId] = useCurConversationId();
+	const [curChatId, setCurChatId] = useCurChatId();
 
 	const newChat = () => {
-		const newConversationId = nanoid();
-		z.mutate.createConversation({ id: newConversationId }).client.then(() => {
-			setCurConversationId(newConversationId);
-		});
+		const newChatId = nanoid();
+		setCurChatId(newChatId);
+		z.mutate.createChat({ id: newChatId });
 	};
 
 	useEffect(() => {
@@ -43,9 +42,9 @@ export function Sidebar({ conversations }: { conversations: any[] }) {
 					<Plus weight="bold" />
 					New Chat
 				</Button>
-				{conversations.map((conversation) => (
-					<SidebarChatButton key={conversation.id} conversation={conversation}>
-						{conversation.title}
+				{chats.map((chat) => (
+					<SidebarChatButton key={chat.id} chat={chat}>
+						{chat.title}
 					</SidebarChatButton>
 				))}
 			</div>

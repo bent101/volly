@@ -6,7 +6,7 @@ export const schema = genSchema.default; // idk why it puts everything in defaul
 export type Schema = typeof schema;
 export type User = Row<typeof schema.tables.users>;
 export type Prompt = Row<typeof schema.tables.prompts>;
-export type Conversation = Row<typeof schema.tables.conversations>;
+export type Chat = Row<typeof schema.tables.chats>;
 export type AIResponse = Row<typeof schema.tables.aiResponses>;
 
 export type Thread = {
@@ -18,7 +18,7 @@ export const permissions = definePermissions<DecodedJWT, Schema>(schema, () => {
 	return {
 		users: ANYONE_CAN_DO_ANYTHING,
 		aiResponses: ANYONE_CAN_DO_ANYTHING,
-		conversations: ANYONE_CAN_DO_ANYTHING,
+		chats: ANYONE_CAN_DO_ANYTHING,
 		prompts: ANYONE_CAN_DO_ANYTHING,
 	};
 });

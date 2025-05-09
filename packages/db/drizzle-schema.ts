@@ -12,7 +12,7 @@ export const users = pgTable("users", {
 	createdAt,
 });
 
-export const conversations = pgTable("conversations", {
+export const chats = pgTable("chats", {
 	id,
 	userId: text("user_id")
 		.notNull()
@@ -25,9 +25,9 @@ export const conversations = pgTable("conversations", {
 
 export const prompts = pgTable("prompts", {
 	id,
-	conversationId: text("conversation_id")
+	chatId: text("chat_id")
 		.notNull()
-		.references(() => conversations.id),
+		.references(() => chats.id),
 	parentId: text("parent_id"),
 	content: text("content").notNull(),
 	createdAt,
@@ -35,9 +35,9 @@ export const prompts = pgTable("prompts", {
 
 export const aiResponses = pgTable("ai_responses", {
 	id,
-	conversationId: text("conversation_id")
+	chatId: text("chat_id")
 		.notNull()
-		.references(() => conversations.id),
+		.references(() => chats.id),
 	parentId: text("parent_id"),
 	content: text("content").notNull(),
 	model: varchar("model", { length: 255 }).notNull(),
@@ -47,31 +47,28 @@ export const aiResponses = pgTable("ai_responses", {
 
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
-	conversations: many(conversations),
+	chats: many(chats),
 }));
 
-export const conversationsRelations = relations(
-	conversations,
-	({ one, many }) => ({
-		user: one(users, {
-			fields: [conversations.userId],
-			references: [users.id],
-		}),
-		prompts: many(prompts),
-		aiResponses: many(aiResponses),
+export const chatsRelations = relations(chats, ({ one, many }) => ({
+	user: one(users, {
+		fields: [chats.userId],
+		references: [users.id],
 	}),
-);
+	prompts: many(prompts),
+	aiResponses: many(aiResponses),
+}));
 
 export const promptsRelations = relations(prompts, ({ one, many }) => ({
-	conversation: one(conversations, {
-		fields: [prompts.conversationId],
-		references: [conversations.id],
+	chat: one(chats, {
+		fields: [prompts.chatId],
+		references: [chats.id],
 	}),
 }));
 
 export const aiResponsesRelations = relations(aiResponses, ({ one, many }) => ({
-	conversation: one(conversations, {
-		fields: [aiResponses.conversationId],
-		references: [conversations.id],
+	chat: one(chats, {
+		fields: [aiResponses.chatId],
+		references: [chats.id],
 	}),
 }));

@@ -70,7 +70,7 @@ export function createServerMutators(
 									id: aiResponseId,
 									content: cur,
 									createdAt: Date.now(),
-									conversationId: prompt.conversationId,
+									chatId: prompt.chatId,
 									model: MODEL,
 									parentId: prompt.id,
 								});
@@ -102,9 +102,9 @@ export function createServerMutators(
 			});
 		},
 
-		createConversation: async (tx, { id }: { id: string }) => {
-			console.log("server createConversation", id);
-			mutators.createConversation(tx, { id });
+		createChat: async (tx, { id }: { id: string }) => {
+			console.log("server createChat", id);
+			mutators.createChat(tx, { id });
 		},
 	} as const satisfies CustomMutatorDefs<typeof schema>;
 }

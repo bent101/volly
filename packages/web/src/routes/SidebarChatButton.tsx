@@ -1,19 +1,19 @@
 import { X } from "phosphor-react";
 import { useZero } from "../context/zero";
 import { cn } from "../lib/utils";
-import { useCurConversationId } from "./useCurConversationId";
-import { Conversation } from "@volly/db/schema";
+import { useCurChatId } from "./useCurChatId";
+import { Chat } from "@volly/db/schema";
 
 export function SidebarChatButton({
 	children,
-	conversation,
+	chat,
 }: {
 	children: React.ReactNode;
-	conversation: Conversation;
+	chat: Chat;
 }) {
 	const z = useZero();
-	const [curConversationId, setCurConversationId] = useCurConversationId();
-	const isActive = curConversationId === conversation.id;
+	const [curChatId, setCurChatId] = useCurChatId();
+	const isActive = curChatId === chat.id;
 
 	return (
 		<div className="group relative">
@@ -22,15 +22,15 @@ export function SidebarChatButton({
 					"peer rounded-md w-full  px-3 py-1.5 text-left text-sm font-medium",
 					isActive ? "bg-bg3 shadow-xs" : "hover:bg-bg3/50",
 				)}
-				onMouseDown={() => setCurConversationId(conversation.id)}
+				onMouseDown={() => setCurChatId(chat.id)}
 			>
 				{children}
 			</button>
 			<button
 				onClick={(e) => {
 					e.stopPropagation();
-					z.mutate.conversations.update({
-						id: conversation.id,
+					z.mutate.chats.update({
+						id: chat.id,
 						deletedAt: Date.now(),
 					});
 				}}

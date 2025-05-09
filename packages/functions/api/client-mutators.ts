@@ -11,12 +11,12 @@ export function createMutators(authData: DecodedJWT) {
 			console.log("createPrompt client", prompt.content);
 			await tx.mutate.prompts.insert(prompt);
 		},
-		createConversation: async (tx, { id }: { id: string }) => {
-			console.log(`createConversation client, id: ${id}`);
-			await tx.mutate.conversations.insert({
+		createChat: async (tx, { id }: { id: string }) => {
+			console.log(`createChat client, id: ${id}`);
+			await tx.mutate.chats.insert({
 				id,
 				userId: authData.properties.userId,
-				title: "New Chat!!!!",
+				title: "New Chat",
 				createdAt: Date.now(),
 				updatedAt: Date.now(),
 				deletedAt: null,
