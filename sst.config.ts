@@ -46,7 +46,7 @@ export default $config({
 		const api = new sst.aws.Function("Api", {
 			handler: "packages/functions/api/index.handler",
 			url: true,
-			link: [db],
+			link: [db, aiApiKey],
 			environment: {
 				ZERO_AUTH_JWKS_URL,
 			},

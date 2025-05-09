@@ -18,10 +18,8 @@ export function SidebarChatButton({
 		<div className="group relative">
 			<button
 				className={cn(
-					"peer w-full rounded-md border px-3 py-1.5 text-left text-sm font-medium",
-					isActive
-						? "bg-bg3 border-tint/10 shadow-xs"
-						: "hover:bg-bg2 border-transparent",
+					"peer w-full rounded-md px-3 py-1.5 text-left text-sm font-medium",
+					isActive ? "bg-bg3 shadow-xs" : "hover:bg-bg3/50",
 				)}
 				onMouseDown={() => setCurConversationId(conversationId)}
 			>

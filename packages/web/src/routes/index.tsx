@@ -1,5 +1,5 @@
 import { useQuery } from "@rocicorp/zero/react";
-import { AIResponse, Prompt, Thread } from "@volly/db/schema";
+import { AIResponse, Prompt } from "@volly/db/schema";
 import { Button } from "../components/ui/button";
 import { useZero } from "../context/zero";
 import { ChatInput } from "./ChatInput";

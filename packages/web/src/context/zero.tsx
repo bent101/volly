@@ -3,16 +3,15 @@ import {
 	createUseZero,
 	ZeroProvider as ZeroProviderBase,
 } from "@rocicorp/zero/react";
-import { decodeJwt } from "jose";
 import { Schema, schema } from "@volly/db/schema";
+import { createMutators, Mutators } from "@volly/functions/api/client-mutators";
 import { DecodedJWT } from "@volly/functions/auth/subjects";
+import { decodeJwt } from "jose";
+import { SplashScreen } from "../components/SplashScreen";
 import { Button } from "../components/ui/button";
 import { useAuth } from "./auth";
-import { SplashScreen } from "../components/SplashScreen";
-import { createMutators } from "@volly/functions/api/mutators";
-import { useMemo } from "react";
 
-export const useZero = createUseZero<Schema>();
+export const useZero = createUseZero<Schema, Mutators>();
 
 export function ZeroProvider({ children }: { children: React.ReactNode }) {
 	const auth = useAuth();
@@ -32,23 +31,13 @@ export function ZeroProvider({ children }: { children: React.ReactNode }) {
 
 	const decodedJwt = decodeJwt<DecodedJWT>(token);
 
-	const zero = useMemo(
-		() =>
-			new Zero({
-				auth: token,
-				userID: decodedJwt.sub!,
-				schema: schema,
-				server: import.meta.env.VITE_ZERO_CACHE_URL,
-				mutators: createMutators(decodedJwt),
-			}),
-		[token],
-	);
-
-	zero
-		.inspect()
-		.then((inspector) => inspector.client.queries())
-		.then((queries) => queries.map((q) => JSON.stringify(q.ast, null, 2)))
-		.then(console.log);
+	const zero = new Zero({
+		auth: token,
+		schema: schema,
+		userID: decodedJwt.sub!,
+		mutators: createMutators(decodedJwt),
+		server: import.meta.env.VITE_ZERO_CACHE_URL,
+	});
 
 	return <ZeroProviderBase zero={zero}>{children}</ZeroProviderBase>;
 }

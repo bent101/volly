@@ -3,18 +3,19 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@volly/db": "*",
-		"sst": "*",
 		"@aws-sdk/client-sesv2": "^3.799.0",
+		"@hono/node-server": "^1.14.1",
 		"@openauthjs/openauth": "^0.4.3",
+		"@openrouter/ai-sdk-provider": "^0.4.5",
+		"@volly/db": "*",
+		"ai": "^4.3.13",
 		"drizzle-orm": "^0.43.1",
 		"hono": "^4.7.8",
+		"jose": "^6.0.10",
 		"nanoid": "^5.1.5",
-		"valibot": "^1.0.0",
-		"@openrouter/ai-sdk-provider": "^0.4.5",
-		"ai": "^4.3.13",
 		"openai": "^4.97.0",
-		"jose": "^6.0.10"
+		"sst": "*",
+		"valibot": "^1.0.0"
 	},
 	"devDependencies": {
 		"@types/aws-lambda": "^8",

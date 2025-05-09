@@ -63,8 +63,6 @@ export function ChatInput({
 
 					const lastAIResponse = _.last(curThread.aiResponses);
 
-					console.log("lastAIResponse", lastAIResponse);
-
 					const prompt = {
 						id: nanoid(),
 						content: curPrompt,
@@ -73,7 +71,9 @@ export function ChatInput({
 						parentId: lastAIResponse?.id ?? null,
 					};
 
-					z.mutate.createPrompt({ prompt, curThread });
+					console.log("client prompt", prompt);
+
+					z.mutate.createPrompt({ prompt, thread: curThread });
 
 					setCurPrompt("");
 					if (contentEditableRef.current) {

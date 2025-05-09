@@ -5,7 +5,7 @@
 
 	--primary: hsl(16, 75%, 45%);
 	--bg-light: hsl(0, 0%, 95%);
-	--bg-dark: hsl(240, 7%, 17%);
+	--bg-dark: hsl(240, 0%, 15%);
 
 	--bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
 	--bg2: var(--bg-light);

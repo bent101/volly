@@ -17,15 +17,9 @@ export function Sidebar({ conversations }: { conversations: any[] }) {
 
 	const newChat = () => {
 		const newConversationId = nanoid();
-		z.mutate.conversations.insert({
-			id: newConversationId,
-			userId: user.id,
-			title: "New Chat",
-			createdAt: Date.now(),
-			updatedAt: Date.now(),
-			deletedAt: null,
+		z.mutate.createConversation({ id: newConversationId }).client.then(() => {
+			setCurConversationId(newConversationId);
 		});
-		setCurConversationId(newConversationId);
 	};
 
 	useEffect(() => {
