@@ -73,6 +73,10 @@ const app = issuer({
 	},
 
 	theme: {
+		favicon: "http://localhost:5173/favicon.png",
+		logo: "http://localhost:5173/favicon.png",
+		radius: "lg",
+		title: "Sign in | Volly",
 		primary: "hsl(16, 75%, 45%)",
 		background: {
 			light: "hsl(0, 0%, 95%)",

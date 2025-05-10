@@ -106,16 +106,16 @@ export function ChatInput({
 					</div>
 				)}
 			</div>
-			<div className="flex gap-2 p-2">
-				<Button className="rounded-full" $intent="secondary">
+			<div className="flex gap-1.5 p-2">
+				<Button className="rounded-full" $intent="secondary" $size="sm">
 					GPT 4o Mini
 					<CaretDown />
 				</Button>
-				<Button className="rounded-full" $intent="secondary">
+				<Button className="rounded-full" $intent="secondary" $size="sm">
 					<GlobeSimple />
 					Search
 				</Button>
-				<Button className="rounded-full" $intent="secondary">
+				<Button className="rounded-full" $intent="secondary" $size="sm">
 					<LightbulbFilament />
 					Reason
 				</Button>
