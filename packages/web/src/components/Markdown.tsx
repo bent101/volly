@@ -17,9 +17,17 @@ export function Markdown({ children }: { children: string }) {
 				a({ node, ...props }) {
 					return <a {...props} target="_blank" />;
 				},
+				table(props) {
+					return (
+						<div className="relative overflow-x-auto">
+							<table {...props} />
+						</div>
+					);
+				},
 				code(props) {
 					const { children, className, node, ...rest } = props;
 					const match = /language-(\w+)/.exec(className || "");
+					const isCodeBlock = String(children).includes("\n");
 					const codeContent = String(children).replace(/\n$/, "");
 					const [copied, setCopied] = useState(false);
 
@@ -29,15 +37,15 @@ export function Markdown({ children }: { children: string }) {
 						setTimeout(() => setCopied(false), 2000);
 					};
 
-					return match ? (
-						<div className="relative scheme-dark">
+					return isCodeBlock ? (
+						<div className="relative scheme-dark overflow-x-clip">
 							<SyntaxHighlighter
 								{...rest}
 								PreTag="div"
 								children={codeContent}
-								language={match[1]}
+								language={match?.[1]}
 								style={vscDarkPlus}
-								className="rounded-lg bg-(--bg-dark)"
+								className="rounded-xl overflow-x-auto!"
 							/>
 							<div className="absolute top-2 right-2">
 								<button

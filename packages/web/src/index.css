@@ -57,6 +57,7 @@ body {
 
 * {
 	@apply outline-none ring-0;
+	scrollbar-color: color-mix(in srgb, transparent, var(--color-tint) 30%) transparent;
 }
 
 button,
@@ -68,7 +69,20 @@ a {
 	}
 }
 
+p {
+	@apply text-pretty;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	@apply text-balance;
+}
+
 .markdown {
+
+	@apply overflow-x-clip;
 
 
 	h1 {
@@ -113,7 +127,7 @@ a {
 
 
 	blockquote {
-		@apply border-l-4 pl-4 py-2 text-fg3 border-tint/10 bg-tint/5 italic mb-4;
+		@apply border-l-4 pl-4 py-2 text-fg3 border-tint/15 italic mb-4 *:last:mb-0;
 	}
 
 	pre code {
@@ -136,16 +150,20 @@ a {
 
 
 	table {
-		@apply w-full border-collapse mb-4 text-sm;
+		@apply border-collapse mb-4 text-sm w-full;
 	}
 
 	th,
 	td {
-		@apply border border-tint/10 px-2.5 p-1.5;
+		@apply px-2.5 p-1.5;
+	}
+
+	td {
+		@apply border-t border-tint/10;
 	}
 
 	th {
-		@apply bg-tint/5;
+		@apply text-left text-fg3 uppercase font-bold text-xs;
 	}
 
 

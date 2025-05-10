@@ -6,13 +6,24 @@ export function createMutators(authData: DecodedJWT) {
 	return {
 		createPrompt: async (
 			tx,
-			{ prompt, thread }: { prompt: Prompt; thread: Thread },
+			{
+				prompt,
+				thread,
+				aiResponseId,
+			}: { prompt: Prompt; thread: Thread; aiResponseId: string },
 		) => {
-			console.log("createPrompt client", prompt.content);
 			await tx.mutate.prompts.insert(prompt);
+
+			await tx.mutate.aiResponses.insert({
+				id: aiResponseId,
+				content: "",
+				createdAt: Date.now(),
+				chatId: prompt.chatId,
+				model: "asdfa",
+				parentId: prompt.id,
+			});
 		},
 		createChat: async (tx, { id }: { id: string }) => {
-			console.log(`createChat client, id: ${id}`);
 			await tx.mutate.chats.insert({
 				id,
 				userId: authData.properties.userId,

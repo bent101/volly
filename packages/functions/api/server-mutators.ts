@@ -1,7 +1,7 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { CustomMutatorDefs } from "@rocicorp/zero";
 import { Prompt, schema, Thread } from "@volly/db/schema";
-import { streamText } from "ai";
+import { generateText, streamText } from "ai";
 import { nanoid } from "nanoid";
 import { Resource } from "sst";
 import { DecodedJWT } from "../auth/subjects";
@@ -14,6 +14,8 @@ const openrouter = createOpenRouter({
 
 const MODEL = "openai/gpt-4o-mini";
 
+const model = openrouter(MODEL);
+
 export function createServerMutators(
 	authData: DecodedJWT,
 	postCommitTasks: (() => Promise<void>)[],
@@ -23,10 +25,21 @@ export function createServerMutators(
 	return {
 		createPrompt: async (
 			tx,
-			{ prompt, thread }: { prompt: Prompt; thread: Thread },
+			{
+				prompt,
+				thread,
+				aiResponseId,
+			}: { prompt: Prompt; thread: Thread; aiResponseId: string },
 		) => {
-			console.log("server prompt", prompt);
-			mutators.createPrompt(tx, { prompt, thread });
+			await mutators.createPrompt(tx, {
+				prompt,
+				thread,
+				aiResponseId,
+			});
+
+			if (thread.prompts.length === 0) {
+				void nameChat(prompt);
+			}
 
 			postCommitTasks.push(async () => {
 				const promptMessages = thread.prompts.map((p) => ({
@@ -47,63 +60,36 @@ export function createServerMutators(
 				});
 
 				const { textStream } = streamText({
-					model: openrouter(MODEL),
+					model: model,
 					messages: messages,
 				});
 
-				const aiResponseId = nanoid();
+				// const aiResponseId = nanoid();
 
 				let cur = "";
-				let isFirst = true;
-
-				console.log("createPrompt postCommit", prompt.content, textStream);
 
 				for await (const chunk of textStream) {
-					console.log("createPrompt postCommit chunk", chunk);
 					cur += chunk;
 
-					if (isFirst) {
-						isFirst = false;
-						zqlDb.transaction(
-							async (tx) => {
-								tx.mutate.aiResponses.insert({
-									id: aiResponseId,
-									content: cur,
-									createdAt: Date.now(),
-									chatId: prompt.chatId,
-									model: MODEL,
-									parentId: prompt.id,
-								});
-							},
-							{
-								clientGroupID: "unused",
-								clientID: "unused",
-								mutationID: 42,
-								upstreamSchema: "unused",
-							},
-						);
-					} else {
-						zqlDb.transaction(
-							async (tx) => {
-								tx.mutate.aiResponses.update({
-									id: aiResponseId,
-									content: cur,
-								});
-							},
-							{
-								clientGroupID: "unused",
-								clientID: "unused",
-								mutationID: 42,
-								upstreamSchema: "unused",
-							},
-						);
-					}
+					zqlDb.transaction(
+						async (tx) => {
+							tx.mutate.aiResponses.update({
+								id: aiResponseId,
+								content: cur,
+							});
+						},
+						{
+							clientGroupID: "unused",
+							clientID: "unused",
+							mutationID: 42,
+							upstreamSchema: "unused",
+						},
+					);
 				}
 			});
 		},
 
 		createChat: async (tx, { id }: { id: string }) => {
-			console.log("server createChat", id);
 			mutators.createChat(tx, { id });
 		},
 	} as const satisfies CustomMutatorDefs<typeof schema>;
@@ -117,4 +103,31 @@ export function weaveArrays<T, U>(a: T[], b: U[]): (T | U)[] {
 	}
 
 	return ret;
+}
+
+async function nameChat(firstPrompt: Prompt) {
+	const { text } = await generateText({
+		model: model,
+		messages: [
+			{
+				role: "user",
+				content: `Respond with only a short and helpful title for a chat that has the following first message (don't surround the title with quotes or anything else): ${firstPrompt.content}`,
+			},
+		],
+	});
+
+	await zqlDb.transaction(
+		async (tx) => {
+			await tx.mutate.chats.update({
+				id: firstPrompt.chatId,
+				title: text,
+			});
+		},
+		{
+			clientGroupID: "unused",
+			clientID: "unused",
+			mutationID: 42,
+			upstreamSchema: "unused",
+		},
+	);
 }

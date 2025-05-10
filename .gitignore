@@ -10,3 +10,4 @@ npm-debug.log*
 *.tsbuildinfo
 .sst
 sync-replica.*
+dist/

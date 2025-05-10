@@ -14,7 +14,8 @@
 		"typescript": "^5"
 	},
 	"dependencies": {
+		"lodash": "^4.17.21",
 		"sst": "latest",
-		"lodash": "^4.17.21"
+		"unist-util-visit": "^5.0.0"
 	}
 }

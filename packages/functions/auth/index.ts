@@ -76,7 +76,7 @@ const app = issuer({
 		primary: "hsl(16, 75%, 45%)",
 		background: {
 			light: "hsl(0, 0%, 95%)",
-			dark: "hsl(240, 0%, 15%)",
+			dark: "hsl(240, 0%, 14%)",
 		},
 	},
 });

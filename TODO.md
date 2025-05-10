@@ -1,5 +1,3 @@
-tanstack router
-chat titles
 model select, style select, search
 	should all be part of the prompt, not the response
 edit prompt
@@ -8,8 +6,6 @@ file upload/paste
 delegation
 fix auth
 	not staying signed in (tokens deleting themselves)
-	sometimes need to sign in twice
-	api handler infinite looping?
 
 fix weird default on schemas
 figure out camel_case ?

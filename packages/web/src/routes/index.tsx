@@ -1,11 +1,12 @@
 import { useQuery } from "@rocicorp/zero/react";
 import { AIResponse, Prompt } from "@volly/db/schema";
-import { Button } from "../components/ui/button";
+import { useEffect, useRef } from "react";
+import { useCurChatId } from "../context/cur-chat";
 import { useZero } from "../context/zero";
+import Logo from "../lib/assets/logo.svg?react";
 import { ChatInput } from "./ChatInput";
 import { PromptSection } from "./PromptSection";
 import { Sidebar } from "./Sidebar";
-import { useCurChatId } from "./useCurChatId";
 
 function getCurThread(chat: {
 	prompts: readonly Prompt[];
@@ -52,32 +53,48 @@ export function Home() {
 			.orderBy("createdAt", "desc"),
 	);
 
-	const [curChatId] = useCurChatId();
+	const { curChatId } = useCurChatId();
 	const curChat = chats.find((c) => c.id === curChatId)!;
 	const curThread = getCurThread(curChat);
+
+	const chatContainerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (chatContainerRef.current) {
+			chatContainerRef.current.scrollTop =
+				chatContainerRef.current.scrollHeight;
+		}
+	}, [curChatId, chatContainerRef.current]);
 
 	return (
 		<div className="bg-bg2 flex h-screen overflow-clip">
 			<Sidebar chats={chats} />
-			<div className="relative flex-1 p-4">
-				<div className="absolute inset-0 overflow-y-auto [scrollbar-gutter:stable_both-edges]">
-					<div className="mx-auto max-w-4xl px-4 pt-16 pb-[calc(100vh-16rem)]">
-						{curThread.rootPrompt && (
-							<PromptSection
-								prompts={chats.flatMap((c) => c.prompts)}
-								aiResponses={chats.flatMap((c) => c.aiResponses)}
-								prompt={curThread.rootPrompt}
-							/>
+			<div className="relative flex-1 h-full">
+				<div
+					ref={chatContainerRef}
+					className="overflow-y-auto overflow-x-clip h-full [scrollbar-gutter:stable_both-edges]"
+				>
+					<div className="p-4 overflow-x-clip">
+						{curThread.rootPrompt ? (
+							<div className="pt-16 overflow-x-clip pb-40 max-w-3xl mx-auto">
+								<PromptSection
+									prompts={chats.flatMap((c) => c.prompts)}
+									aiResponses={chats.flatMap((c) => c.aiResponses)}
+									prompt={curThread.rootPrompt}
+								/>
+							</div>
+						) : (
+							<div className="flex flex-col gap-4 items-center justify-center h-[calc(100vh-8rem)] text-tint/5">
+								<Logo className="size-32 fill-tint/15" />
+								<p className="text-3xl text-fg3 font-bold">
+									How can I help you?
+								</p>
+							</div>
 						)}
 					</div>
 				</div>
-				<div className="bg-bg3 border-tint/10 focus-within:border-tint/20 text-fg1 absolute inset-x-4 bottom-0 mx-auto flex max-w-4xl flex-col rounded-t-3xl border border-b-0 shadow">
+				<div className="absolute inset-x-2 bottom-0 pb-3 mx-auto max-w-3xl">
 					<ChatInput curThread={curThread} />
-					<div className="flex gap-2 p-2 pt-0">
-						<Button className="rounded-full" $intent="secondary">
-							other stuff
-						</Button>
-					</div>
 				</div>
 			</div>
 		</div>

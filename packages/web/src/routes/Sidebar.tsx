@@ -4,21 +4,17 @@ import { useEffect } from "react";
 import { SearchButton } from "../components/SearchButton";
 import { Button } from "../components/ui/button";
 import { useAuth } from "../context/auth";
-import { useUser } from "../context/user";
 import { useZero } from "../context/zero";
 import { SidebarChatButton } from "./SidebarChatButton";
-import { useCurChatId } from "./useCurChatId";
+import { useCurChatId } from "../context/cur-chat";
 
 export function Sidebar({ chats }: { chats: any[] }) {
 	const z = useZero();
-	const user = useUser();
 	const auth = useAuth();
-	const [curChatId, setCurChatId] = useCurChatId();
+	const { setCurChatId } = useCurChatId();
 
 	const newChat = () => {
-		const newChatId = nanoid();
-		setCurChatId(newChatId);
-		z.mutate.createChat({ id: newChatId });
+		setCurChatId(undefined);
 	};
 
 	useEffect(() => {
@@ -33,22 +29,20 @@ export function Sidebar({ chats }: { chats: any[] }) {
 	}, []);
 
 	return (
-		<div className="bg-bg1 flex w-72 border-r border-tint/10 flex-col max-md:hidden">
-			<div className="flex h-14 items-center border-b-2 border-b-black/10 px-2">
+		<div className="bg-bg1 flex flex-col w-72 border-r border-tint/10 max-md:hidden">
+			<div className="p-2 space-y-2">
 				<SearchButton />
-			</div>
-			<div className="flex-1 overflow-y-auto p-2">
-				<Button className="mb-2 w-full" onClick={newChat}>
+				<Button className="w-full" onMouseDown={newChat}>
 					<Plus weight="bold" />
 					New Chat
 				</Button>
+			</div>
+			<div className="flex-1 p-2 overflow-y-auto">
 				{chats.map((chat) => (
-					<SidebarChatButton key={chat.id} chat={chat}>
-						{chat.title}
-					</SidebarChatButton>
+					<SidebarChatButton key={chat.id} chat={chat} />
 				))}
 			</div>
-			<div className="flex p-2">
+			<div className="p-2">
 				<Button
 					$intent="secondary"
 					className="w-full"

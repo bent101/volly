@@ -9,7 +9,7 @@ export function SearchButton() {
 			<div className="flex-1" />
 			<div className="flex items-center">
 				<Command className="size-[1.2em]" />
-				<div className="font-mono text-base">K</div>
+				<div className="font-mono text-base select-none">K</div>
 			</div>
 		</Button>
 	);
