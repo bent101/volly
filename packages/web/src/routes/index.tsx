@@ -39,6 +39,10 @@ export function Home() {
 		scrollChatToBottom();
 	}, [curChatId, chatContainerRef.current]);
 
+	useEffect(() => {
+		setEditedPrompt(""); // todo: persist in-progress prompts
+	}, [curChatId]);
+
 	return (
 		<div className="bg-bg2 flex h-screen overflow-clip">
 			<Sidebar chats={chats} />

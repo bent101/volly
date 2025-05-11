@@ -1,4 +1,5 @@
 tangents
+	add ability to turn prmopt into a tangent
 delegation
 cmd k search
 add metadata from openrouter, debug prompt caching/latency

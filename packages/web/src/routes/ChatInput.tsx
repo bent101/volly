@@ -26,19 +26,22 @@ export function ChatInput({
 	// Focus on chat switch or when initialPrompt changes
 	useEffect(() => {
 		setTimeout(() => {
-			if (!initialPrompt || !contentEditableRef.current) return;
+			if (!contentEditableRef.current) return;
+
+			contentEditableRef.current.focus();
+
+			if (!initialPrompt) return;
 
 			contentEditableRef.current.textContent = initialPrompt;
 			setCurPrompt(initialPrompt);
 
-			contentEditableRef.current.focus();
 			const selection = window.getSelection();
 			const range = document.createRange();
 			range.selectNodeContents(contentEditableRef.current);
 			selection?.removeAllRanges();
 			selection?.addRange(range);
 		}, 0);
-	}, [initialPrompt]);
+	}, [initialPrompt, curChatId]);
 
 	// Handle typing and focus
 	useIsTyping({
