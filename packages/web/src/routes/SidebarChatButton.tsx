@@ -26,10 +26,11 @@ export function SidebarChatButton({ chat }: { chat: Chat }) {
 
 	const handleBlur = () => {
 		setIsEditing(false);
-		if (title !== chat.title) {
+		const trimmedTitle = title.trim();
+		if (trimmedTitle !== chat.title && trimmedTitle !== "") {
 			z.mutate.chats.update({
 				id: chat.id,
-				title,
+				title: trimmedTitle,
 				updatedAt: Date.now(),
 			});
 		}
@@ -48,8 +49,13 @@ export function SidebarChatButton({ chat }: { chat: Chat }) {
 		<div className="group relative">
 			<button
 				className={cn(
-					"peer truncate rounded-md w-full px-3 py-2 pr-6 text-left text-sm font-medium",
-					isActive ? "bg-bg3 shadow-xs" : "hover:bg-bg3/50",
+					"peer truncate border-2 border-transparent rounded-md w-full text-left text-sm font-medium",
+					isEditing
+						? "bg-transparent border-blue-500"
+						: [
+								" px-3 py-1.5 pr-6",
+								isActive ? "bg-bg3 shadow-xs" : "hover:bg-bg3/50",
+							],
 				)}
 				onMouseDown={() => setCurChatId(chat.id)}
 				onDoubleClick={handleDoubleClick}
@@ -62,25 +68,27 @@ export function SidebarChatButton({ chat }: { chat: Chat }) {
 						onChange={(e) => setTitle(e.target.value)}
 						onBlur={handleBlur}
 						onKeyDown={handleKeyDown}
-						className="w-full bg-transparent"
+						className="px-3 py-1.5 w-full bg-transparent"
 					/>
 				) : (
 					chat.title
 				)}
 			</button>
-			<button
-				onClick={(e) => {
-					e.stopPropagation();
-					z.mutate.chats.update({
-						id: chat.id,
-						deletedAt: Date.now(),
-					});
-					setCurChatId(undefined);
-				}}
-				className="text-fg3 hover:bg-tint/5 absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full p-1 opacity-0 group-hover:opacity-100 peer-focus-visible:opacity-100 focus:opacity-100"
-			>
-				<X size={16} weight="bold" />
-			</button>
+			{!isEditing && (
+				<button
+					onClick={(e) => {
+						e.stopPropagation();
+						z.mutate.chats.update({
+							id: chat.id,
+							deletedAt: Date.now(),
+						});
+						setCurChatId(undefined);
+					}}
+					className="text-fg3 hover:bg-tint/5 absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full p-1 opacity-0 group-hover:opacity-100 peer-focus-visible:opacity-100 focus:opacity-100"
+				>
+					<X size={16} weight="bold" />
+				</button>
+			)}
 		</div>
 	);
 }

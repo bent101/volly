@@ -1,3 +1,4 @@
+import { Tooltip } from "radix-ui";
 import { AuthProvider } from "./context/auth";
 import { ChatIdProvider } from "./context/cur-chat";
 import { ZeroProvider } from "./context/zero";
@@ -8,7 +9,9 @@ export default function App() {
 		<AuthProvider>
 			<ZeroProvider>
 				<ChatIdProvider>
-					<Home />
+					<Tooltip.Provider delayDuration={50} disableHoverableContent>
+						<Home />
+					</Tooltip.Provider>
 				</ChatIdProvider>
 			</ZeroProvider>
 		</AuthProvider>

@@ -8,7 +8,6 @@
 	},
 	"dependencies": {
 		"@openauthjs/openauth": "^0.4.3",
-		"@radix-ui/react-scroll-area": "^1.2.8",
 		"@rocicorp/zero": "0.20.2025050901",
 		"@tailwindcss/vite": "^4.1.5",
 		"@uidotdev/usehooks": "^2.4.1",
@@ -21,6 +20,7 @@
 		"katex": "^0.16.22",
 		"nanoid": "^5.1.5",
 		"phosphor-react": "^1.4.1",
+		"radix-ui": "^1.4.1",
 		"react": "^19.1.0",
 		"react-dom": "^19.0.0",
 		"react-markdown": "^10.1.0",

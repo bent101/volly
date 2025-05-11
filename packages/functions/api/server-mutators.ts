@@ -61,7 +61,13 @@ export function createServerMutators(
 
 				const { textStream } = streamText({
 					model: model,
-					messages: messages,
+					messages: [
+						{
+							role: "system",
+							content: `You are Volly, a helpful assistant based on the ${MODEL} model. Whenever writing math, ALWAYS use either single dollar signs ($...$) for inline math or double dollar signs ($$...$$) for display math.`,
+						},
+						...messages,
+					],
 				});
 
 				// const aiResponseId = nanoid();

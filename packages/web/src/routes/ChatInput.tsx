@@ -10,8 +10,10 @@ import { useIsTyping } from "../hooks/useIsTyping";
 
 export function ChatInput({
 	curThread,
+	scrollChatToBottom,
 }: {
 	curThread: { prompts: Prompt[]; aiResponses: AIResponse[] };
+	scrollChatToBottom: () => void;
 }) {
 	const z = useZero();
 
@@ -79,6 +81,10 @@ export function ChatInput({
 		if (contentEditableRef.current) {
 			contentEditableRef.current.textContent = "";
 		}
+
+		setTimeout(() => {
+			scrollChatToBottom();
+		}, 0);
 	}
 
 	return (
@@ -89,7 +95,7 @@ export function ChatInput({
 					contentEditable="plaintext-only"
 					autoFocus
 					spellCheck={false}
-					className="text-fg1 max-h-80 min-h-16 overflow-y-auto pl-5 pr-1 pt-4 [scrollbar-gutter:stable]"
+					className="text-fg1 max-h-80 min-h-16 overflow-y-auto pl-4 pr-1 pt-4 [scrollbar-gutter:stable]"
 					suppressContentEditableWarning
 					onKeyDown={(e) => {
 						if (e.key === "Enter" && !e.shiftKey && curPrompt.trim() !== "") {
@@ -101,7 +107,7 @@ export function ChatInput({
 					}}
 				/>
 				{["", "\n"].includes(curPrompt) && (
-					<div className="absolute pointer-events-none text-fg3 top-4 left-5">
+					<div className="absolute pointer-events-none text-fg3 top-4 left-4">
 						Ask anything... {curPrompt}
 					</div>
 				)}

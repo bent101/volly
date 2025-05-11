@@ -59,24 +59,28 @@ export function Home() {
 
 	const chatContainerRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
+	function scrollChatToBottom() {
 		if (chatContainerRef.current) {
 			chatContainerRef.current.scrollTop =
 				chatContainerRef.current.scrollHeight;
 		}
+	}
+
+	useEffect(() => {
+		scrollChatToBottom();
 	}, [curChatId, chatContainerRef.current]);
 
 	return (
 		<div className="bg-bg2 flex h-screen overflow-clip">
 			<Sidebar chats={chats} />
-			<div className="relative flex-1 h-full">
+			<div className="relative overflow-x-auto overflow-y-clip flex-1 h-full">
 				<div
 					ref={chatContainerRef}
-					className="overflow-y-auto overflow-x-clip h-full [scrollbar-gutter:stable_both-edges]"
+					className="overflow-y-auto h-full [scrollbar-gutter:stable] pl-4"
 				>
-					<div className="p-4 overflow-x-clip">
+					<div className="">
 						{curThread.rootPrompt ? (
-							<div className="pt-16 overflow-x-clip pb-40 max-w-3xl mx-auto">
+							<div className="pt-16 pb-40 max-w-3xl mx-auto">
 								<PromptSection
 									prompts={chats.flatMap((c) => c.prompts)}
 									aiResponses={chats.flatMap((c) => c.aiResponses)}
@@ -93,8 +97,11 @@ export function Home() {
 						)}
 					</div>
 				</div>
-				<div className="absolute inset-x-2 bottom-0 pb-3 mx-auto max-w-3xl">
-					<ChatInput curThread={curThread} />
+				<div className="absolute inset-x-2 rounded-t-full bottom-0 pb-2 bg-bg2 mx-auto max-w-[52rem]">
+					<ChatInput
+						curThread={curThread}
+						scrollChatToBottom={scrollChatToBottom}
+					/>
 				</div>
 			</div>
 		</div>

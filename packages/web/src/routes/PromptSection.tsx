@@ -14,7 +14,7 @@ export function PromptSection({
 
 	return (
 		<>
-			<div className="bg-bg3 overflow-x-clip border-tint/10 ml-auto w-fit max-w-2xl rounded-3xl rounded-br-md border px-4 py-3 wrap-anywhere whitespace-pre-wrap shadow-xs">
+			<div className="bg-bg3 border-tint/10 ml-auto w-fit max-w-2xl rounded-3xl rounded-br-md border px-4 py-3 wrap-anywhere whitespace-pre-wrap shadow-xs">
 				{prompt.content}
 			</div>
 			{firstChild && (

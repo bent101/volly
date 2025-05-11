@@ -1,10 +1,13 @@
-model select, style select, search
-	should all be part of the prompt, not the response
-edit prompt
+edit/retry prompt
 multiple root prompts
 file upload/paste
 delegation
-fix auth
+fix height (isChatting = false initially on navigation, then true after first prompt is sent)
+fix latency
+fix rerendering
+model select, style select, search
+	should all be part of the prompt, not the response
+fix auth (?)
 	not staying signed in (tokens deleting themselves)
 
 fix weird default on schemas

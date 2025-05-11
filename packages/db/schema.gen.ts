@@ -23,230 +23,167 @@ import type { default as DrizzleConfigSchema } from "./drizzle-zero.config";
  * This type is auto-generated from your Drizzle schema definition.
  */
 export const schema = {
-	default: {
-		tables: {
-			aiResponses: {
-				name: "aiResponses",
-				columns: {
-					id: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["id"]["customType"],
-					},
-					chatId: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["chatId"]["customType"],
-						serverName: "chat_id",
-					},
-					parentId: {
-						type: "string",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["parentId"]["customType"],
-						serverName: "parent_id",
-					},
-					content: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["content"]["customType"],
-					},
-					model: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["model"]["customType"],
-					},
-					metadata: {
-						type: "string",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["metadata"]["customType"],
-					},
-					createdAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["aiResponses"]["columns"]["createdAt"]["customType"],
-						serverName: "created_at",
-					},
-				},
-				primaryKey: ["id"],
-				serverName: "ai_responses",
-			},
-			chats: {
-				name: "chats",
-				columns: {
-					id: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["id"]["customType"],
-					},
-					userId: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["userId"]["customType"],
-						serverName: "user_id",
-					},
-					title: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["title"]["customType"],
-					},
-					createdAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["createdAt"]["customType"],
-						serverName: "created_at",
-					},
-					updatedAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["updatedAt"]["customType"],
-						serverName: "updated_at",
-					},
-					deletedAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["deletedAt"]["customType"],
-						serverName: "deleted_at",
-					},
-				},
-				primaryKey: ["id"],
-			},
-			prompts: {
-				name: "prompts",
-				columns: {
-					id: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["id"]["customType"],
-					},
-					chatId: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["chatId"]["customType"],
-						serverName: "chat_id",
-					},
-					parentId: {
-						type: "string",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["parentId"]["customType"],
-						serverName: "parent_id",
-					},
-					content: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["content"]["customType"],
-					},
-					createdAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["createdAt"]["customType"],
-						serverName: "created_at",
-					},
-				},
-				primaryKey: ["id"],
-			},
-			users: {
-				name: "users",
-				columns: {
-					id: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["id"]["customType"],
-					},
-					email: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["email"]["customType"],
-					},
-					createdAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["createdAt"]["customType"],
-						serverName: "created_at",
-					},
-				},
-				primaryKey: ["id"],
-			},
-		},
-		relationships: {
-			aiResponses: {
-				chat: [
-					{
-						sourceField: ["chatId"],
-						destField: ["id"],
-						destSchema: "chats",
-						cardinality: "one",
-					},
-				],
-			},
-			chats: {
-				user: [
-					{
-						sourceField: ["userId"],
-						destField: ["id"],
-						destSchema: "users",
-						cardinality: "one",
-					},
-				],
-				prompts: [
-					{
-						sourceField: ["id"],
-						destField: ["chatId"],
-						destSchema: "prompts",
-						cardinality: "many",
-					},
-				],
-				aiResponses: [
-					{
-						sourceField: ["id"],
-						destField: ["chatId"],
-						destSchema: "aiResponses",
-						cardinality: "many",
-					},
-				],
-			},
-			prompts: {
-				chat: [
-					{
-						sourceField: ["chatId"],
-						destField: ["id"],
-						destSchema: "chats",
-						cardinality: "one",
-					},
-				],
-			},
-			users: {
-				chats: [
-					{
-						sourceField: ["id"],
-						destField: ["userId"],
-						destSchema: "chats",
-						cardinality: "many",
-					},
-				],
-			},
-		},
-	},
+    "default": {
+        "tables": {
+            "aiResponses": {
+                "name": "aiResponses",
+                "columns": {
+                    "id": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["aiResponses"]["columns"]["id"]["customType"]
+                    },
+                    "chatId": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["aiResponses"]["columns"]["chatId"]["customType"],
+                        "serverName": "chat_id"
+                    },
+                    "parentId": {
+                        "type": "string",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["aiResponses"]["columns"]["parentId"]["customType"],
+                        "serverName": "parent_id"
+                    },
+                    "content": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["aiResponses"]["columns"]["content"]["customType"]
+                    },
+                    "model": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["aiResponses"]["columns"]["model"]["customType"]
+                    },
+                    "metadata": {
+                        "type": "string",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["aiResponses"]["columns"]["metadata"]["customType"]
+                    },
+                    "createdAt": {
+                        "type": "number",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["aiResponses"]["columns"]["createdAt"]["customType"],
+                        "serverName": "created_at"
+                    }
+                },
+                "primaryKey": ["id"],
+                "serverName": "ai_responses"
+            },
+            "chats": {
+                "name": "chats",
+                "columns": {
+                    "id": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["chats"]["columns"]["id"]["customType"]
+                    },
+                    "userId": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["chats"]["columns"]["userId"]["customType"],
+                        "serverName": "user_id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["chats"]["columns"]["title"]["customType"]
+                    },
+                    "createdAt": {
+                        "type": "number",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["chats"]["columns"]["createdAt"]["customType"],
+                        "serverName": "created_at"
+                    },
+                    "updatedAt": {
+                        "type": "number",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["chats"]["columns"]["updatedAt"]["customType"],
+                        "serverName": "updated_at"
+                    },
+                    "deletedAt": {
+                        "type": "number",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["chats"]["columns"]["deletedAt"]["customType"],
+                        "serverName": "deleted_at"
+                    }
+                },
+                "primaryKey": ["id"]
+            },
+            "prompts": {
+                "name": "prompts",
+                "columns": {
+                    "id": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["prompts"]["columns"]["id"]["customType"]
+                    },
+                    "chatId": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["prompts"]["columns"]["chatId"]["customType"],
+                        "serverName": "chat_id"
+                    },
+                    "parentId": {
+                        "type": "string",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["prompts"]["columns"]["parentId"]["customType"],
+                        "serverName": "parent_id"
+                    },
+                    "content": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["prompts"]["columns"]["content"]["customType"]
+                    },
+                    "createdAt": {
+                        "type": "number",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["prompts"]["columns"]["createdAt"]["customType"],
+                        "serverName": "created_at"
+                    }
+                },
+                "primaryKey": ["id"]
+            },
+            "users": {
+                "name": "users",
+                "columns": {
+                    "id": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["users"]["columns"]["id"]["customType"]
+                    },
+                    "email": {
+                        "type": "string",
+                        "optional": false,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["users"]["columns"]["email"]["customType"]
+                    },
+                    "createdAt": {
+                        "type": "number",
+                        "optional": true,
+                        "customType": null as typeof DrizzleConfigSchema["default"]["tables"]["users"]["columns"]["createdAt"]["customType"],
+                        "serverName": "created_at"
+                    }
+                },
+                "primaryKey": ["id"]
+            }
+        },
+        "relationships": {
+            "aiResponses": {
+                "chat": [{ "sourceField": ["chatId"], "destField": ["id"], "destSchema": "chats", "cardinality": "one" }]
+            },
+            "chats": {
+                "user": [{ "sourceField": ["userId"], "destField": ["id"], "destSchema": "users", "cardinality": "one" }],
+                "prompts": [{ "sourceField": ["id"], "destField": ["chatId"], "destSchema": "prompts", "cardinality": "many" }],
+                "aiResponses": [{ "sourceField": ["id"], "destField": ["chatId"], "destSchema": "aiResponses", "cardinality": "many" }]
+            },
+            "prompts": {
+                "chat": [{ "sourceField": ["chatId"], "destField": ["id"], "destSchema": "chats", "cardinality": "one" }]
+            },
+            "users": {
+                "chats": [{ "sourceField": ["id"], "destField": ["userId"], "destSchema": "chats", "cardinality": "many" }]
+            }
+        }
+    }
 } as const;
 
 /**
