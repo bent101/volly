@@ -1,30 +1,34 @@
 tangents
 delegation
+cmd k search
+add metadata from openrouter, debug prompt caching/latency
+cmd j jump to prompt
+table of contents
 prompt expands to become the chat input box upon edit and other stuff fades
-	per chat, persist editing state (what were editing), input state (whats in our input box), and scroll pos
+	per chat, persist editing state (what were editing), and input state (whats in our input box)
+persist scroll positions locally
 sticky code buttons
 code line wrap
 act on press thing
-cmd k search
-cmd j jump to prompt
-add metadata from openrouter
 fix creating lots of chats in a row (+ loading spinners)
 sharing
-file upload/paste
+error handling
+model select, style select, web search, chat search
+media upload/paste, paste event
 ability to interrupt/continue
-fix "new chat" on rename
 fix height (isChatting = false initially on navigation, then true after first prompt is sent)
 fix rerendering
-model select, style select, web search, chat search
 	should all be part of the prompt, not the response
+fix render perf (syntax highlighting, virt scroll)
 fix auth (?)
 	not staying signed in (tokens deleting themselves)
-
 
 fix weird default on schemas
 figure out camel_case ?
 deploy zero to prod
 domain, email, deploy to prod
+
+---
 
 3 kinds of convesation branches:
 	edits
@@ -42,24 +46,3 @@ under a response:
 
 prompt templates for repetitive self prompts?
 	research the current state of \${\["food", "housing", "public transit"]} in \${\["SF", "Seattle", "Irvine"]}.
-
-
-prompt A
-
-response A
-
-prompt B
-
-response B
-
-
-
-
------ ---
-----
------- -
-- --
---- --
--
---
--- --

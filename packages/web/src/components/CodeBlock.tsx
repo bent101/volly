@@ -37,6 +37,7 @@ export function CodeBlock(
 					children={codeContent}
 					language={language}
 					style={theme}
+					// renderer={virtualizedRenderer({ rowHeight: 18 })}
 					className={cn(
 						"my-0! text-sm! bg-transparent! pt-0! *:bg-transparent! *:font-mono!",
 					)}

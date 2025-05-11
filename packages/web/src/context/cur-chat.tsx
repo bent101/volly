@@ -7,32 +7,32 @@ const ChatIdContext = createContext<{
 
 export function ChatIdProvider({ children }: { children: React.ReactNode }) {
 	const [curChatId, setCurChatIdBase] = useState<string | undefined>(
-		window.location.pathname.split("/").pop(),
+		window.location.pathname.split("/").pop() || undefined,
 	);
 
 	const setCurChatId = (chatId: string | undefined) => {
 		if (chatId === curChatId) return;
-		if (chatId) {
+		if (chatId === undefined) {
+			setCurChatIdBase(undefined);
+			history.pushState(null, "", "/");
+		} else {
 			if (curChatId) {
 				history.pushState(null, "", `/${chatId}`);
 			} else {
 				history.replaceState(null, "", `/${chatId}`);
 			}
 			setCurChatIdBase(chatId);
-		} else {
-			setCurChatIdBase(undefined);
-			history.pushState(null, "", "/");
 		}
 	};
 
 	useEffect(() => {
 		function handlePopState() {
-			const chatId = window.location.pathname.split("/").pop();
+			const chatId = window.location.pathname.split("/").pop() || undefined;
 			setCurChatIdBase(chatId);
 		}
 		window.addEventListener("popstate", handlePopState);
 		return () => window.removeEventListener("popstate", handlePopState);
-	}, []);
+	}, [curChatId]);
 
 	return (
 		<ChatIdContext.Provider value={{ curChatId, setCurChatId }}>

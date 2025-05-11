@@ -26,7 +26,7 @@ export function Sidebar({ chats }: { chats: any[] }) {
 
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, []);
+	}, [newChat]);
 
 	return (
 		<div className="bg-bg1 flex flex-col w-72 border-r border-tint/10 max-md:hidden">
