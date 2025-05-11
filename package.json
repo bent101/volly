@@ -7,7 +7,8 @@
 	"scripts": {
 		"pkill": "lsof -i :4852 | grep '(LISTEN)' | awk '{print $2}' | xargs kill -9",
 		"sstdev": "sst dev",
-		"dev": "npm run pkill && npm run sstdev"
+		"dev": "npm run pkill && npm run sstdev",
+		"api-dev": "bun run --watch packages/functions/api/dev.ts"
 	},
 	"devDependencies": {
 		"@tsconfig/node22": "^22",

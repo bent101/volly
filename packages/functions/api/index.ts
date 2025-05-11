@@ -3,9 +3,19 @@ import { Hono } from "hono";
 import { handle } from "hono/aws-lambda";
 import { createRemoteJWKSet, jwtVerify } from "jose";
 import { parse } from "valibot";
-import { DecodedJWT, subjects } from "../auth/subjects";
 import { createServerMutators } from "./server-mutators";
 import { zqlDb } from "./zqlDb";
+
+import { createSubjects } from "@openauthjs/openauth/subject";
+import { InferOutput, object, string } from "valibot";
+
+const subjects = createSubjects({
+	user: object({
+		userId: string(),
+	}),
+});
+
+type DecodedJWT = { properties: InferOutput<typeof subjects.user> };
 
 const processor = new PushProcessor(zqlDb);
 
@@ -56,4 +66,5 @@ app.post("/zero-push", async (c) => {
 	return c.json(response);
 });
 
+export { app };
 export const handler = handle(app);

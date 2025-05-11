@@ -43,12 +43,24 @@ export default $config({
 
 		const ZERO_AUTH_JWKS_URL = $interpolate`${auth.url}/.well-known/jwks.json`;
 
-		const api = new sst.aws.Function("Api", {
-			handler: "packages/functions/api/index.handler",
-			url: true,
+		const api = $dev
+			? null
+			: new sst.aws.Function("Api", {
+					handler: "packages/functions/api/index.handler",
+					url: true,
+					link: [db, aiApiKey],
+					environment: {
+						ZERO_AUTH_JWKS_URL,
+					},
+				});
+
+		new sst.x.DevCommand("ApiDev", {
 			link: [db, aiApiKey],
 			environment: {
 				ZERO_AUTH_JWKS_URL,
+			},
+			dev: {
+				command: "npm run api-dev",
 			},
 		});
 
@@ -63,7 +75,9 @@ export default $config({
 			? undefined
 			: new sst.aws.Bucket(`ReplicationBucket`);
 
-		const zeroPushUrl = $interpolate`${api.url}zero-push`;
+		const zeroPushUrl = $dev
+			? "http://localhost:3000/zero-push"
+			: $interpolate`${api.url}zero-push`;
 
 		const zeroEnv = {
 			ZERO_AUTH_JWKS_URL,
