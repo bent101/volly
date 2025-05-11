@@ -1,4 +1,3 @@
-import { useZero } from "@rocicorp/zero/react";
 import { Chat, Prompt } from "@volly/db/schema";
 import {
 	ArrowsClockwise,
@@ -11,6 +10,9 @@ import { Markdown } from "../components/Markdown";
 import { CopyButton } from "../components/ui/copy-button";
 import { IconButton } from "../components/ui/icon-button";
 import { cn } from "../lib/utils";
+import { nanoid } from "nanoid";
+import { getCurThread } from "../lib/getCurThread";
+import { useZero } from "../context/zero";
 
 export function ChatMessages({
 	chat,
@@ -43,9 +45,43 @@ export function ChatMessages({
 		}
 	}
 
+	function retryMessage(prompt: Prompt) {
+		if (!chat) return;
+
+		z.mutate.createPrompt({
+			prompt: {
+				id: nanoid(),
+				chatId: chat.id,
+				parentId: prompt.parentId,
+
+				model: prompt.model,
+				promptContent: prompt.promptContent,
+
+				childIdx: 0,
+				createdAt: Date.now(),
+				responseContent: "",
+				responseMetadata: "",
+				responseCompletedAt: null,
+			},
+			thread: getCurThread(chat),
+			createNewChat: false,
+		});
+
+		setChildIdx(childPrompts.length);
+	}
+
 	const currentIdx = parent?.childIdx ?? chat.rootPromptIdx;
 	const canGoLeft = currentIdx > 0;
 	const canGoRight = currentIdx < childPrompts.length - 1;
+
+	const retryButton = (
+		<IconButton
+			$icon={ArrowsClockwise}
+			$tooltip="Retry"
+			$tooltipPosition="bottom"
+			onClick={() => retryMessage(prompt)}
+		/>
+	);
 
 	return (
 		<>
@@ -56,7 +92,7 @@ export function ChatMessages({
 				<div className="bg-bg3 border-tint/10 ml-auto w-fit max-w-2xl rounded-3xl rounded-br-lg border px-4 pt-3 pb-3 wrap-anywhere whitespace-pre-wrap shadow-xs">
 					{prompt.promptContent}
 				</div>
-				<div className="flex items-center text-fg3 py-1 justify-end">
+				<div className="flex items-center pt-1 justify-end">
 					{childPrompts.length > 1 && (
 						<>
 							<IconButton
@@ -66,7 +102,7 @@ export function ChatMessages({
 								disabled={!canGoLeft}
 								onClick={() => setChildIdx(currentIdx - 1)}
 							/>
-							<div className="font-bold text-sm px-1">
+							<div className="font-bold text-sm text-fg3 px-1">
 								{currentIdx + 1} / {childPrompts.length}
 							</div>
 							<IconButton
@@ -87,15 +123,7 @@ export function ChatMessages({
 							setChildIdx(childPrompts.length);
 						}}
 					/>
-					<IconButton
-						$icon={ArrowsClockwise}
-						$tooltip="Retry"
-						$tooltipPosition="bottom"
-						onClick={() => {
-							onEdit(prompt.promptContent);
-							setChildIdx(childPrompts.length);
-						}}
-					/>
+					{retryButton}
 
 					<CopyButton content={prompt.promptContent} />
 				</div>
@@ -103,7 +131,7 @@ export function ChatMessages({
 			<div
 				className={cn(
 					"markdown py-4 leading-relaxed relative",
-					isLastMessage && " min-h-[calc(100vh-24rem)]",
+					isLastMessage && " min-h-[calc(100vh-28rem)]",
 				)}
 			>
 				{prompt.responseContent ? (
@@ -112,13 +140,14 @@ export function ChatMessages({
 					<div className="rounded-full size-4 shrink-0 animate-pulse bg-tint/20" />
 				)}
 				{prompt.responseCompletedAt && (
-					<div className="flex gap-1 text-fg3">
+					<div className="flex">
 						<CopyButton content={prompt.responseContent} />
+						{retryButton}
 					</div>
 				)}
 			</div>
 			{!isLastMessage && (
-				<ChatMessages chat={chat} parentId={prompt.id} onEdit={onEdit} />
+				<ChatMessages parentId={prompt.id} chat={chat} onEdit={onEdit} />
 			)}
 		</>
 	);

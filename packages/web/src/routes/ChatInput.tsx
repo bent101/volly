@@ -67,7 +67,6 @@ export function ChatInput({
 	function handleSubmit() {
 		const nextChatId = curChatId ?? nanoid();
 		const lastPrompt = _.last(curThread);
-		const childPrompts = curThread.filter((p) => p.parentId === lastPrompt?.id);
 
 		z.mutate
 			.createPrompt({
@@ -77,7 +76,8 @@ export function ChatInput({
 					model: "google/gemini-1.5-flash",
 					promptContent: curPrompt.trim(),
 					parentId: lastPrompt?.id ?? null,
-					childIdx: childPrompts.length,
+
+					childIdx: 0,
 					createdAt: Date.now(),
 					responseContent: "",
 					responseMetadata: "",
@@ -102,7 +102,7 @@ export function ChatInput({
 	}
 
 	return (
-		<div className="bg-bg3 border-tint/10 focus-within:border-tint/20 flex flex-col rounded-t-3xl border-b-0 border">
+		<div className="bg-bg3 border-tint/15 shadow-lg focus-within:border-tint/25 flex flex-col rounded-t-3xl border-b-0 border">
 			<div className="relative">
 				<div
 					ref={contentEditableRef}

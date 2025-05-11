@@ -1,32 +1,13 @@
 import { useQuery } from "@rocicorp/zero/react";
-import { Prompt } from "@volly/db/schema";
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../context/auth";
 import { useCurChatId } from "../context/cur-chat";
 import { useZero } from "../context/zero";
 import Logo from "../lib/assets/logo.svg?react";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
 import { Sidebar } from "./Sidebar";
-import { useAuth } from "../context/auth";
-
-function getCurThread(chat: {
-	prompts: readonly Prompt[];
-	rootPromptIdx: number;
-}): Prompt[] {
-	const rootPrompts = chat.prompts.filter((p) => p.parentId === null);
-	let cur = rootPrompts[chat.rootPromptIdx];
-	if (!cur) return [];
-	const prompts = [cur];
-
-	while (true) {
-		const children = chat.prompts.filter((p) => p.parentId === cur.id);
-		cur = children[cur.childIdx];
-		if (!cur) break;
-		prompts.push(cur);
-	}
-
-	return prompts;
-}
+import { getCurThread } from "../lib/getCurThread";
 
 export function Home() {
 	const z = useZero();

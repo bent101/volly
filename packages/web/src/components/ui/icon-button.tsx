@@ -14,13 +14,13 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
 			<button
 				ref={ref}
 				className={cn(
-					"p-1.5 group hover:bg-tint/10 rounded-lg disabled:cursor-not-allowed! disabled:opacity-40",
+					"p-1.5 group text-fg3 hover:bg-tint/10 rounded-lg disabled:cursor-not-allowed! disabled:opacity-40",
 					$tooltip && "group relative",
 					className,
 				)}
 				{...props}
 			>
-				<Icon className="size-5" />
+				<Icon className="size-5" weight="bold" />
 				{$tooltip && (
 					<div
 						className={cn(

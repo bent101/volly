@@ -1,9 +1,10 @@
-buttons on top of response for copy/speak/whatever
-prompt expands to become the chat input box upon edit and other stuff fades
-	per chat, persist editing state (what were editing), input state (whats in our input box), and scroll pos
-act on press thing
 tangents
 delegation
+prompt expands to become the chat input box upon edit and other stuff fades
+	per chat, persist editing state (what were editing), input state (whats in our input box), and scroll pos
+sticky code buttons
+code line wrap
+act on press thing
 cmd k search
 cmd j jump to prompt
 add metadata from openrouter
@@ -18,6 +19,7 @@ model select, style select, web search, chat search
 	should all be part of the prompt, not the response
 fix auth (?)
 	not staying signed in (tokens deleting themselves)
+
 
 fix weird default on schemas
 figure out camel_case ?
