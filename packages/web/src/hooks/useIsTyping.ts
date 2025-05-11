@@ -19,6 +19,7 @@ export function useIsTyping({
 				!e.ctrlKey &&
 				!e.metaKey &&
 				!e.altKey &&
+				e.key !== " " &&
 				!document.activeElement?.matches("input, textarea, [contenteditable]")
 			) {
 				isTypingRef.current = true;

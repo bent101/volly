@@ -1,4 +1,4 @@
-import { AIResponse, Prompt } from "@volly/db/schema";
+import { Prompt } from "@volly/db/schema";
 import _ from "lodash";
 import { nanoid } from "nanoid";
 import { CaretDown, GlobeSimple, LightbulbFilament } from "phosphor-react";
@@ -11,22 +11,34 @@ import { useIsTyping } from "../hooks/useIsTyping";
 export function ChatInput({
 	curThread,
 	scrollChatToBottom,
+	initialPrompt,
 }: {
-	curThread: { prompts: Prompt[]; aiResponses: AIResponse[] };
+	curThread: Prompt[];
 	scrollChatToBottom: () => void;
+	initialPrompt?: string;
 }) {
 	const z = useZero();
 
 	const { curChatId, setCurChatId } = useCurChatId();
-	const [curPrompt, setCurPrompt] = useState("");
+	const [curPrompt, setCurPrompt] = useState(initialPrompt ?? "");
 	const contentEditableRef = useRef<HTMLDivElement>(null);
 
-	// Focus on chat switch
+	// Focus on chat switch or when initialPrompt changes
 	useEffect(() => {
 		setTimeout(() => {
-			contentEditableRef.current?.focus();
+			if (!initialPrompt || !contentEditableRef.current) return;
+
+			contentEditableRef.current.textContent = initialPrompt;
+			setCurPrompt(initialPrompt);
+
+			contentEditableRef.current.focus();
+			const selection = window.getSelection();
+			const range = document.createRange();
+			range.selectNodeContents(contentEditableRef.current);
+			selection?.removeAllRanges();
+			selection?.addRange(range);
 		}, 0);
-	}, [curChatId, contentEditableRef]);
+	}, [initialPrompt]);
 
 	// Handle typing and focus
 	useIsTyping({
@@ -53,29 +65,31 @@ export function ChatInput({
 	}, [contentEditableRef, setCurPrompt]);
 
 	function handleSubmit() {
-		const lastAIResponse = _.last(curThread.aiResponses);
+		const nextChatId = curChatId ?? nanoid();
+		const lastPrompt = _.last(curThread);
+		const childPrompts = curThread.filter((p) => p.parentId === lastPrompt?.id);
 
-		let chatId = curChatId;
+		z.mutate
+			.createPrompt({
+				prompt: {
+					id: nanoid(),
+					chatId: nextChatId,
+					model: "google/gemini-1.5-flash",
+					promptContent: curPrompt.trim(),
+					parentId: lastPrompt?.id ?? null,
+					childIdx: childPrompts.length,
+					createdAt: Date.now(),
+					responseContent: "",
+					responseMetadata: "",
+					responseCompletedAt: null,
+				},
+				thread: curThread,
+				createNewChat: !curChatId,
+			})
+			.client.then(() => {
+				setCurChatId(nextChatId);
+			});
 
-		if (!chatId) {
-			chatId = nanoid();
-			setCurChatId(chatId);
-			z.mutate.createChat({ id: chatId });
-		}
-
-		const prompt = {
-			id: nanoid(),
-			content: curPrompt.trim(),
-			chatId,
-			createdAt: Date.now(),
-			parentId: lastAIResponse?.id ?? null,
-		};
-
-		z.mutate.createPrompt({
-			prompt,
-			thread: curThread,
-			aiResponseId: nanoid(),
-		});
 		setCurPrompt("");
 
 		if (contentEditableRef.current) {
@@ -88,14 +102,14 @@ export function ChatInput({
 	}
 
 	return (
-		<div className="bg-bg3 border-tint/10 focus-within:border-tint/20 flex flex-col rounded-3xl border shadow">
+		<div className="bg-bg3 border-tint/10 focus-within:border-tint/20 flex flex-col rounded-t-3xl border-b-0 border">
 			<div className="relative">
 				<div
 					ref={contentEditableRef}
 					contentEditable="plaintext-only"
 					autoFocus
 					spellCheck={false}
-					className="text-fg1 max-h-80 min-h-16 overflow-y-auto pl-4 pr-1 pt-4 [scrollbar-gutter:stable]"
+					className="text-fg1 max-h-80 min-h-16 overflow-y-auto pl-4 pr-1 pt-3 pb-2 [scrollbar-gutter:stable]"
 					suppressContentEditableWarning
 					onKeyDown={(e) => {
 						if (e.key === "Enter" && !e.shiftKey && curPrompt.trim() !== "") {
@@ -107,7 +121,7 @@ export function ChatInput({
 					}}
 				/>
 				{["", "\n"].includes(curPrompt) && (
-					<div className="absolute pointer-events-none text-fg3 top-4 left-4">
+					<div className="absolute pointer-events-none text-fg3 top-3 left-4">
 						Ask anything... {curPrompt}
 					</div>
 				)}

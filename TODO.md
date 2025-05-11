@@ -1,11 +1,20 @@
-edit/retry prompt
-multiple root prompts
-file upload/paste
+buttons on top of response for copy/speak/whatever
+prompt expands to become the chat input box upon edit and other stuff fades
+	per chat, persist editing state (what were editing), input state (whats in our input box), and scroll pos
+act on press thing
+tangents
 delegation
+cmd k search
+cmd j jump to prompt
+add metadata from openrouter
+fix creating lots of chats in a row (+ loading spinners)
+sharing
+file upload/paste
+ability to interrupt/continue
+fix "new chat" on rename
 fix height (isChatting = false initially on navigation, then true after first prompt is sent)
-fix latency
 fix rerendering
-model select, style select, search
+model select, style select, web search, chat search
 	should all be part of the prompt, not the response
 fix auth (?)
 	not staying signed in (tokens deleting themselves)

@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 :root {
-	@apply bg-bg1 text-fg2 font-medium antialiased scheme-light-dark selection:bg-blue-500 selection:text-white;
+	@apply bg-bg1 text-fg2 tabular-nums font-medium antialiased scheme-light-dark selection:bg-blue-500 selection:text-white;
+	interpolate-size: allow-keywords;
 
 	--primary: hsl(16, 75%, 45%);
-	--bg-light: hsl(0, 0%, 95%);
+	--bg-light: hsl(50, 5%, 95%);
 	--bg-dark: hsl(240, 0%, 15%);
 
 	--bg1: oklch(from var(--bg-light) calc(l - 0.03) c h);
@@ -13,9 +14,9 @@
 
 	--fg1: oklch(from var(--bg-light) calc(l - 0.7) c h);
 	--fg2: oklch(from var(--bg-light) calc(l - 0.5) c h);
-	--fg3: oklch(from var(--bg-light) calc(l - 0.3) c h);
+	--fg3: oklch(from var(--bg-light) calc(l - 0.35) c h);
 
-	--tint: #000;
+	--tint: #222;
 	--invtint: #fff;
 }
 
@@ -27,9 +28,9 @@
 
 		--fg1: oklch(from var(--bg-dark) calc(l + 0.7) c h);
 		--fg2: oklch(from var(--bg-dark) calc(l + 0.55) c h);
-		--fg3: oklch(from var(--bg-dark) calc(l + 0.3) c h);
+		--fg3: oklch(from var(--bg-dark) calc(l + 0.35) c h);
 
-		--tint: #fff9;
+		--tint: #bbb;
 		--invtint: #000;
 	}
 }
@@ -57,7 +58,7 @@ body {
 
 * {
 	@apply outline-none ring-0;
-	scrollbar-color: color-mix(in srgb, transparent, var(--color-tint) 30%) transparent;
+	scrollbar-color: color-mix(in srgb, transparent, var(--color-tint) 20%) transparent;
 }
 
 button,
@@ -102,7 +103,7 @@ h4 {
 	}
 
 	code {
-		@apply bg-black/10 dark:bg-black/20 inline-block text-[0.8em] text-fg1 rounded-[0.4em] px-[0.3em] py-[0.08em];
+		@apply bg-black/5 dark:bg-black/25 border border-black/5 inline-block text-[0.8em] text-fg1 rounded-[0.4em] px-[0.3em] py-[0.08em];
 	}
 
 	b,

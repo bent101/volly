@@ -14,6 +14,10 @@ export function SidebarChatButton({ chat }: { chat: Chat }) {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
+		setTitle(chat.title);
+	}, [chat.title]);
+
+	useEffect(() => {
 		if (isEditing && inputRef.current) {
 			inputRef.current.focus();
 			inputRef.current.select();
@@ -82,7 +86,9 @@ export function SidebarChatButton({ chat }: { chat: Chat }) {
 							id: chat.id,
 							deletedAt: Date.now(),
 						});
-						setCurChatId(undefined);
+						if (curChatId === chat.id) {
+							setCurChatId(undefined);
+						}
 					}}
 					className="text-fg3 hover:bg-tint/5 absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full p-1 opacity-0 group-hover:opacity-100 peer-focus-visible:opacity-100 focus:opacity-100"
 				>

@@ -1,9 +1,15 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import {
+	pgTable,
+	smallint,
+	text,
+	timestamp,
+	varchar,
+} from "drizzle-orm/pg-core";
 
 const id = text("id").primaryKey();
-const createdAt = timestamp("created_at").notNull().defaultNow();
-const updatedAt = timestamp("updated_at").notNull().defaultNow();
+const createdAt = timestamp("created_at").notNull();
+const updatedAt = timestamp("updated_at").notNull();
 const deletedAt = timestamp("deleted_at");
 
 export const users = pgTable("users", {
@@ -18,6 +24,7 @@ export const chats = pgTable("chats", {
 		.notNull()
 		.references(() => users.id),
 	title: varchar("title", { length: 255 }).notNull(),
+	rootPromptIdx: smallint("root_prompt_idx").notNull(),
 	createdAt,
 	updatedAt,
 	deletedAt,
@@ -29,19 +36,12 @@ export const prompts = pgTable("prompts", {
 		.notNull()
 		.references(() => chats.id),
 	parentId: text("parent_id"),
-	content: text("content").notNull(),
-	createdAt,
-});
-
-export const aiResponses = pgTable("ai_responses", {
-	id,
-	chatId: text("chat_id")
-		.notNull()
-		.references(() => chats.id),
-	parentId: text("parent_id"),
-	content: text("content").notNull(),
+	childIdx: smallint("child_idx").notNull(),
+	promptContent: text("prompt_content").notNull(),
 	model: varchar("model", { length: 255 }).notNull(),
-	metadata: text("metadata"),
+	responseContent: text("response_content").notNull(),
+	responseMetadata: text("response_metadata").notNull(),
+	responseCompletedAt: timestamp("response_completed_at"),
 	createdAt,
 });
 
@@ -56,19 +56,11 @@ export const chatsRelations = relations(chats, ({ one, many }) => ({
 		references: [users.id],
 	}),
 	prompts: many(prompts),
-	aiResponses: many(aiResponses),
 }));
 
 export const promptsRelations = relations(prompts, ({ one, many }) => ({
 	chat: one(chats, {
 		fields: [prompts.chatId],
-		references: [chats.id],
-	}),
-}));
-
-export const aiResponsesRelations = relations(aiResponses, ({ one, many }) => ({
-	chat: one(chats, {
-		fields: [aiResponses.chatId],
 		references: [chats.id],
 	}),
 }));

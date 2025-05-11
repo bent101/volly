@@ -7,17 +7,10 @@ export type Schema = typeof schema;
 export type User = Row<typeof schema.tables.users>;
 export type Prompt = Row<typeof schema.tables.prompts>;
 export type Chat = Row<typeof schema.tables.chats>;
-export type AIResponse = Row<typeof schema.tables.aiResponses>;
-
-export type Thread = {
-	prompts: Prompt[];
-	aiResponses: AIResponse[];
-};
 
 export const permissions = definePermissions<DecodedJWT, Schema>(schema, () => {
 	return {
 		users: ANYONE_CAN_DO_ANYTHING,
-		aiResponses: ANYONE_CAN_DO_ANYTHING,
 		chats: ANYONE_CAN_DO_ANYTHING,
 		prompts: ANYONE_CAN_DO_ANYTHING,
 	};

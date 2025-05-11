@@ -17,6 +17,7 @@
 	"dependencies": {
 		"lodash": "^4.17.21",
 		"sst": "latest",
-		"unist-util-visit": "^5.0.0"
+		"unist-util-visit": "^5.0.0",
+		"utility-types": "^3.11.0"
 	}
 }

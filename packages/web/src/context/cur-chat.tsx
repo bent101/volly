@@ -11,11 +11,14 @@ export function ChatIdProvider({ children }: { children: React.ReactNode }) {
 	);
 
 	const setCurChatId = (chatId: string | undefined) => {
-		console.log("setCurChatId", chatId, curChatId);
 		if (chatId === curChatId) return;
 		if (chatId) {
+			if (curChatId) {
+				history.pushState(null, "", `/${chatId}`);
+			} else {
+				history.replaceState(null, "", `/${chatId}`);
+			}
 			setCurChatIdBase(chatId);
-			history.pushState(null, "", `/${chatId}`);
 		} else {
 			setCurChatIdBase(undefined);
 			history.pushState(null, "", "/");

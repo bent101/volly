@@ -1,5 +1,6 @@
 import { CustomMutatorDefs } from "@rocicorp/zero";
-import { Prompt, Thread, schema } from "@volly/db/schema";
+import { Prompt, schema } from "@volly/db/schema";
+import { nanoid } from "nanoid";
 import { DecodedJWT } from "../auth/subjects";
 
 export function createMutators(authData: DecodedJWT) {
@@ -8,30 +9,27 @@ export function createMutators(authData: DecodedJWT) {
 			tx,
 			{
 				prompt,
+				createNewChat,
 				thread,
-				aiResponseId,
-			}: { prompt: Prompt; thread: Thread; aiResponseId: string },
+			}: {
+				prompt: Prompt;
+				createNewChat: boolean;
+				thread: Prompt[];
+			},
 		) => {
-			await tx.mutate.prompts.insert(prompt);
+			if (createNewChat) {
+				await tx.mutate.chats.insert({
+					id: prompt.chatId,
+					userId: authData.properties.userId,
+					title: "New Chat",
+					createdAt: Date.now(),
+					updatedAt: Date.now(),
+					deletedAt: null,
+					rootPromptIdx: 0,
+				});
+			}
 
-			await tx.mutate.aiResponses.insert({
-				id: aiResponseId,
-				content: "",
-				createdAt: Date.now(),
-				chatId: prompt.chatId,
-				model: "asdfa",
-				parentId: prompt.id,
-			});
-		},
-		createChat: async (tx, { id }: { id: string }) => {
-			await tx.mutate.chats.insert({
-				id,
-				userId: authData.properties.userId,
-				title: "New Chat",
-				createdAt: Date.now(),
-				updatedAt: Date.now(),
-				deletedAt: null,
-			});
+			await tx.mutate.prompts.insert(prompt);
 		},
 	} as const satisfies CustomMutatorDefs<typeof schema>;
 }

@@ -9,11 +9,6 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
-    "Api": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
     "Auth": {
       "type": "sst.aws.Auth"
       "url": string

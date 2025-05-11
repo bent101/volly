@@ -1,9 +1,12 @@
 import { createClient } from "@openauthjs/openauth/client";
+import { DecodedJWT } from "@volly/functions/auth/subjects";
+import { decodeJwt } from "jose";
 import {
 	createContext,
 	ReactNode,
 	useContext,
 	useEffect,
+	useMemo,
 	useRef,
 	useState,
 } from "react";
@@ -18,6 +21,7 @@ interface AuthContextType {
 	logout: () => void;
 	login: () => Promise<void>;
 	token: string | undefined;
+	userId: string;
 }
 
 const AuthContext = createContext({} as AuthContextType);
@@ -28,6 +32,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const [token, setToken] = useState<string | undefined>(
 		localStorage.getItem("access") || undefined,
 	);
+
+	const userId = useMemo(() => {
+		return token ? decodeJwt<DecodedJWT>(token).properties.userId : undefined;
+	}, [token]);
 
 	useEffect(() => {
 		console.log("[Auth] Initial effect running");
@@ -139,6 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				logout,
 				loaded,
 				token,
+				userId: userId!,
 			}}
 		>
 			{children}
