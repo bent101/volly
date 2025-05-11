@@ -78,24 +78,20 @@ export function Home() {
 					ref={chatContainerRef}
 					className="overflow-y-auto h-full [scrollbar-gutter:stable] pl-4"
 				>
-					<div className="">
-						{curThread.rootPrompt ? (
-							<div className="pt-16 pb-40 max-w-3xl mx-auto">
-								<PromptSection
-									prompts={chats.flatMap((c) => c.prompts)}
-									aiResponses={chats.flatMap((c) => c.aiResponses)}
-									prompt={curThread.rootPrompt}
-								/>
-							</div>
-						) : (
-							<div className="flex flex-col gap-4 items-center justify-center h-[calc(100vh-8rem)] text-tint/5">
-								<Logo className="size-32 fill-tint/15" />
-								<p className="text-3xl text-fg3 font-bold">
-									How can I help you?
-								</p>
-							</div>
-						)}
-					</div>
+					{curThread.rootPrompt ? (
+						<div className="pt-16 pb-40 max-w-3xl mx-auto">
+							<PromptSection
+								prompts={chats.flatMap((c) => c.prompts)}
+								aiResponses={chats.flatMap((c) => c.aiResponses)}
+								prompt={curThread.rootPrompt}
+							/>
+						</div>
+					) : (
+						<div className="flex flex-col gap-4 items-center justify-center h-[calc(100vh-8rem)] text-tint/5">
+							<Logo className="size-32 fill-tint/15" />
+							<p className="text-3xl text-fg3 font-bold">How can I help you?</p>
+						</div>
+					)}
 				</div>
 				<div className="absolute inset-x-2 rounded-t-full bottom-0 pb-2 bg-bg2 mx-auto max-w-[52rem]">
 					<ChatInput
