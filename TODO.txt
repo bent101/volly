@@ -1,3 +1,9 @@
+migrate?
+	cloudflare workers
+		app builder/code interpreter: cloudflare workers for platforms
+
+
+model select
 tangents
 	add ability to turn prmopt into a tangent
 delegation
@@ -5,29 +11,40 @@ cmd k search
 add metadata from openrouter, debug prompt caching/latency
 cmd j jump to prompt
 table of contents
-prompt expands to become the chat input box upon edit and other stuff fades
+editing: prompt expands to become the chat input box upon edit and other stuff fades
 	per chat, persist editing state (what were editing), and input state (whats in our input box)
-persist scroll positions locally
-sticky code buttons
-code line wrap
-act on press thing
-fix creating lots of chats in a row (+ loading spinners)
 sharing
-error handling
-model select, style select, web search, chat search
+style select
+web search
+chat search
 media upload/paste, paste event
+error handling
 ability to interrupt/continue
+deploy zero to prod
+domain, email, deploy to prod
+
+polish
+
+persist scroll positions locally
+act on press thing
+code line wrap
+sticky code block buttons
 fix height (isChatting = false initially on navigation, then true after first prompt is sent)
+
+perf
+
 fix rerendering
 	should all be part of the prompt, not the response
 fix render perf (syntax highlighting, virt scroll)
+optimize first load
+fix creating lots of chats in a row (+ loading spinners)
 fix auth (?)
 	not staying signed in (tokens deleting themselves)
 
-fix weird default on schemas
-figure out camel_case ?
-deploy zero to prod
-domain, email, deploy to prod
+dx
+
+new drizzle-zero, figure out camel_case
+
 
 ---
 

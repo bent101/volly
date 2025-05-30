@@ -52,8 +52,9 @@ export function ChatMessages({
 			prompt: {
 				id: nanoid(),
 				chatId: chat.id,
-				parentId: prompt.parentId,
 
+				parentId: prompt.parentId,
+				isTangent: prompt.isTangent,
 				model: prompt.model,
 				promptContent: prompt.promptContent,
 
@@ -97,7 +98,7 @@ export function ChatMessages({
 						<>
 							<IconButton
 								$icon={CaretLeft}
-								$tooltip="Previous Edit"
+								$tooltip="Previous"
 								$tooltipPosition="bottom"
 								disabled={!canGoLeft}
 								onClick={() => setChildIdx(currentIdx - 1)}
@@ -107,7 +108,7 @@ export function ChatMessages({
 							</div>
 							<IconButton
 								$icon={CaretRight}
-								$tooltip="Next Edit"
+								$tooltip="Next"
 								$tooltipPosition="bottom"
 								disabled={!canGoRight}
 								onClick={() => setChildIdx(currentIdx + 1)}

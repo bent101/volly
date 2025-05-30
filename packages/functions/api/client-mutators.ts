@@ -1,6 +1,5 @@
 import { CustomMutatorDefs } from "@rocicorp/zero";
 import { Prompt, schema } from "@volly/db/schema";
-import { nanoid } from "nanoid";
 import { DecodedJWT } from "../auth/subjects";
 
 export function createMutators(authData: DecodedJWT) {

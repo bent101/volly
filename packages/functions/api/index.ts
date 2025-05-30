@@ -45,6 +45,7 @@ app.post("/zero-push", async (c) => {
 	try {
 		if (jwksUrl && authorization) {
 			const JWKS = createRemoteJWKSet(new URL(jwksUrl));
+
 			const { payload } = await jwtVerify(authorization, JWKS);
 			decodedJwt = {
 				properties: parse(subjects.user, payload.properties),

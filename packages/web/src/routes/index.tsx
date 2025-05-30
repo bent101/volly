@@ -4,10 +4,10 @@ import { useAuth } from "../context/auth";
 import { useCurChatId } from "../context/cur-chat";
 import { useZero } from "../context/zero";
 import Logo from "../lib/assets/logo.svg?react";
+import { getCurThread } from "../lib/getCurThread";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
 import { Sidebar } from "./Sidebar";
-import { getCurThread } from "../lib/getCurThread";
 
 export function Home() {
 	const z = useZero();
@@ -45,6 +45,7 @@ export function Home() {
 
 	return (
 		<div className="bg-bg2 flex h-screen overflow-clip">
+			<title>{curChat ? `${curChat.title} | Volly` : "Volly"}</title>
 			<Sidebar chats={chats} />
 			<div className="relative overflow-x-auto overflow-y-clip flex-1 h-full">
 				{curChat ? (

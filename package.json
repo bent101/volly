@@ -15,6 +15,7 @@
 		"typescript": "^5"
 	},
 	"dependencies": {
+		"fuzzysort": "^3.1.0",
 		"lodash": "^4.17.21",
 		"sst": "latest",
 		"unist-util-visit": "^5.0.0",

@@ -7,6 +7,7 @@ import { Button } from "../components/ui/button";
 import { useCurChatId } from "../context/cur-chat";
 import { useZero } from "../context/zero";
 import { useIsTyping } from "../hooks/useIsTyping";
+import { ModelSelect } from "../components/ModelSelect";
 
 export function ChatInput({
 	curThread,
@@ -74,12 +75,13 @@ export function ChatInput({
 		z.mutate
 			.createPrompt({
 				prompt: {
+					promptContent: curPrompt.trim(),
+					model: "google/gemini-1.5-flash",
+					isTangent: true,
+
 					id: nanoid(),
 					chatId: nextChatId,
-					model: "google/gemini-1.5-flash",
-					promptContent: curPrompt.trim(),
 					parentId: lastPrompt?.id ?? null,
-
 					childIdx: 0,
 					createdAt: Date.now(),
 					responseContent: "",
@@ -130,10 +132,8 @@ export function ChatInput({
 				)}
 			</div>
 			<div className="flex gap-1.5 p-2">
-				<Button className="rounded-full" $intent="secondary" $size="sm">
-					GPT 4o Mini
-					<CaretDown />
-				</Button>
+				<ModelSelect />
+
 				<Button className="rounded-full" $intent="secondary" $size="sm">
 					<GlobeSimple />
 					Search

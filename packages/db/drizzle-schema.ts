@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+	boolean,
 	pgTable,
 	smallint,
 	text,
@@ -15,6 +16,9 @@ const deletedAt = timestamp("deleted_at");
 export const users = pgTable("users", {
 	id,
 	email: varchar("email", { length: 255 }).notNull().unique(),
+	model: varchar("model", { length: 255 })
+		.notNull()
+		.default("google/gemini-1.5-flash"),
 	createdAt,
 });
 
@@ -39,10 +43,19 @@ export const prompts = pgTable("prompts", {
 	childIdx: smallint("child_idx").notNull(),
 	promptContent: text("prompt_content").notNull(),
 	model: varchar("model", { length: 255 }).notNull(),
+	isTangent: boolean("is_tangent").notNull(),
+
 	responseContent: text("response_content").notNull(),
 	responseMetadata: text("response_metadata").notNull(),
 	responseCompletedAt: timestamp("response_completed_at"),
 	createdAt,
+});
+
+export const kv = pgTable("kv", {
+	id,
+	value: text("value").notNull(),
+	createdAt,
+	updatedAt,
 });
 
 // Relations

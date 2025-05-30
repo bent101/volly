@@ -1,14 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { atom, useAtom } from "jotai";
+import { useEffect } from "react";
 
-const ChatIdContext = createContext<{
-	curChatId: string | undefined;
-	setCurChatId: (chatId: string | undefined) => void;
-} | null>(null);
+const curChatIdAtom = atom<string | undefined>(
+	window.location.pathname.split("/").pop() || undefined,
+);
 
-export function ChatIdProvider({ children }: { children: React.ReactNode }) {
-	const [curChatId, setCurChatIdBase] = useState<string | undefined>(
-		window.location.pathname.split("/").pop() || undefined,
-	);
+export function useCurChatId() {
+	const [curChatId, setCurChatIdBase] = useAtom(curChatIdAtom);
 
 	const setCurChatId = (chatId: string | undefined) => {
 		if (chatId === curChatId) return;
@@ -32,19 +30,7 @@ export function ChatIdProvider({ children }: { children: React.ReactNode }) {
 		}
 		window.addEventListener("popstate", handlePopState);
 		return () => window.removeEventListener("popstate", handlePopState);
-	}, [curChatId]);
+	}, [curChatId, setCurChatIdBase]);
 
-	return (
-		<ChatIdContext.Provider value={{ curChatId, setCurChatId }}>
-			{children}
-		</ChatIdContext.Provider>
-	);
-}
-
-export function useCurChatId() {
-	const context = useContext(ChatIdContext);
-	if (!context) {
-		throw new Error("useCurChatId must be used within a ChatIdProvider");
-	}
-	return context;
+	return { curChatId, setCurChatId };
 }

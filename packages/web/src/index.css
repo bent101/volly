@@ -70,6 +70,10 @@ a {
 	}
 }
 
+input {
+	@apply placeholder:text-fg3 w-full;
+}
+
 p {
 	@apply text-pretty;
 }

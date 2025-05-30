@@ -36,6 +36,14 @@ export default drizzleZeroConfig(drizzleSchema, {
 			model: true,
 			responseMetadata: true,
 			responseCompletedAt: true,
+			isTangent: true,
+		},
+		kv: {
+			id: true,
+			key: true,
+			value: true,
+			createdAt: true,
+			updatedAt: true,
 		},
 	},
 

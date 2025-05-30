@@ -23,202 +23,247 @@ import type { default as DrizzleConfigSchema } from "./drizzle-zero.config";
  * This type is auto-generated from your Drizzle schema definition.
  */
 export const schema = {
-	default: {
-		tables: {
-			chats: {
-				name: "chats",
-				columns: {
-					id: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["id"]["customType"],
-					},
-					userId: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["userId"]["customType"],
-						serverName: "user_id",
-					},
-					title: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["title"]["customType"],
-					},
-					rootPromptIdx: {
-						type: "number",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["rootPromptIdx"]["customType"],
-						serverName: "root_prompt_idx",
-					},
-					createdAt: {
-						type: "number",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["createdAt"]["customType"],
-						serverName: "created_at",
-					},
-					updatedAt: {
-						type: "number",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["updatedAt"]["customType"],
-						serverName: "updated_at",
-					},
-					deletedAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["deletedAt"]["customType"],
-						serverName: "deleted_at",
-					},
-				},
-				primaryKey: ["id"],
-			},
-			prompts: {
-				name: "prompts",
-				columns: {
-					id: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["id"]["customType"],
-					},
-					chatId: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["chatId"]["customType"],
-						serverName: "chat_id",
-					},
-					parentId: {
-						type: "string",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["parentId"]["customType"],
-						serverName: "parent_id",
-					},
-					childIdx: {
-						type: "number",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["childIdx"]["customType"],
-						serverName: "child_idx",
-					},
-					promptContent: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["promptContent"]["customType"],
-						serverName: "prompt_content",
-					},
-					model: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["model"]["customType"],
-					},
-					responseContent: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["responseContent"]["customType"],
-						serverName: "response_content",
-					},
-					responseMetadata: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["responseMetadata"]["customType"],
-						serverName: "response_metadata",
-					},
-					responseCompletedAt: {
-						type: "number",
-						optional: true,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["responseCompletedAt"]["customType"],
-						serverName: "response_completed_at",
-					},
-					createdAt: {
-						type: "number",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["createdAt"]["customType"],
-						serverName: "created_at",
-					},
-				},
-				primaryKey: ["id"],
-			},
-			users: {
-				name: "users",
-				columns: {
-					id: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["id"]["customType"],
-					},
-					email: {
-						type: "string",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["email"]["customType"],
-					},
-					createdAt: {
-						type: "number",
-						optional: false,
-						customType:
-							null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["createdAt"]["customType"],
-						serverName: "created_at",
-					},
-				},
-				primaryKey: ["id"],
-			},
-		},
-		relationships: {
-			chats: {
-				user: [
-					{
-						sourceField: ["userId"],
-						destField: ["id"],
-						destSchema: "users",
-						cardinality: "one",
-					},
-				],
-				prompts: [
-					{
-						sourceField: ["id"],
-						destField: ["chatId"],
-						destSchema: "prompts",
-						cardinality: "many",
-					},
-				],
-			},
-			prompts: {
-				chat: [
-					{
-						sourceField: ["chatId"],
-						destField: ["id"],
-						destSchema: "chats",
-						cardinality: "one",
-					},
-				],
-			},
-			users: {
-				chats: [
-					{
-						sourceField: ["id"],
-						destField: ["userId"],
-						destSchema: "chats",
-						cardinality: "many",
-					},
-				],
-			},
-		},
-	},
+  default: {
+    tables: {
+      chats: {
+        name: "chats",
+        columns: {
+          id: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["id"]["customType"],
+          },
+          userId: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["userId"]["customType"],
+            serverName: "user_id",
+          },
+          title: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["title"]["customType"],
+          },
+          rootPromptIdx: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["rootPromptIdx"]["customType"],
+            serverName: "root_prompt_idx",
+          },
+          createdAt: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["createdAt"]["customType"],
+            serverName: "created_at",
+          },
+          updatedAt: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["updatedAt"]["customType"],
+            serverName: "updated_at",
+          },
+          deletedAt: {
+            type: "number",
+            optional: true,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["chats"]["columns"]["deletedAt"]["customType"],
+            serverName: "deleted_at",
+          },
+        },
+        primaryKey: ["id"],
+      },
+      kv: {
+        name: "kv",
+        columns: {
+          id: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["kv"]["columns"]["id"]["customType"],
+          },
+          value: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["kv"]["columns"]["value"]["customType"],
+          },
+          createdAt: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["kv"]["columns"]["createdAt"]["customType"],
+            serverName: "created_at",
+          },
+          updatedAt: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["kv"]["columns"]["updatedAt"]["customType"],
+            serverName: "updated_at",
+          },
+        },
+        primaryKey: ["id"],
+      },
+      prompts: {
+        name: "prompts",
+        columns: {
+          id: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["id"]["customType"],
+          },
+          chatId: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["chatId"]["customType"],
+            serverName: "chat_id",
+          },
+          parentId: {
+            type: "string",
+            optional: true,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["parentId"]["customType"],
+            serverName: "parent_id",
+          },
+          childIdx: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["childIdx"]["customType"],
+            serverName: "child_idx",
+          },
+          promptContent: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["promptContent"]["customType"],
+            serverName: "prompt_content",
+          },
+          model: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["model"]["customType"],
+          },
+          isTangent: {
+            type: "boolean",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["isTangent"]["customType"],
+            serverName: "is_tangent",
+          },
+          responseContent: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["responseContent"]["customType"],
+            serverName: "response_content",
+          },
+          responseMetadata: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["responseMetadata"]["customType"],
+            serverName: "response_metadata",
+          },
+          responseCompletedAt: {
+            type: "number",
+            optional: true,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["responseCompletedAt"]["customType"],
+            serverName: "response_completed_at",
+          },
+          createdAt: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["prompts"]["columns"]["createdAt"]["customType"],
+            serverName: "created_at",
+          },
+        },
+        primaryKey: ["id"],
+      },
+      users: {
+        name: "users",
+        columns: {
+          id: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["id"]["customType"],
+          },
+          email: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["email"]["customType"],
+          },
+          model: {
+            type: "string",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["model"]["customType"],
+          },
+          createdAt: {
+            type: "number",
+            optional: false,
+            customType:
+              null as (typeof DrizzleConfigSchema)["tables"]["users"]["columns"]["createdAt"]["customType"],
+            serverName: "created_at",
+          },
+        },
+        primaryKey: ["id"],
+      },
+    },
+    relationships: {
+      chats: {
+        user: [
+          {
+            sourceField: ["userId"],
+            destField: ["id"],
+            destSchema: "users",
+            cardinality: "one",
+          },
+        ],
+        prompts: [
+          {
+            sourceField: ["id"],
+            destField: ["chatId"],
+            destSchema: "prompts",
+            cardinality: "many",
+          },
+        ],
+      },
+      prompts: {
+        chat: [
+          {
+            sourceField: ["chatId"],
+            destField: ["id"],
+            destSchema: "chats",
+            cardinality: "one",
+          },
+        ],
+      },
+      users: {
+        chats: [
+          {
+            sourceField: ["id"],
+            destField: ["userId"],
+            destSchema: "chats",
+            cardinality: "many",
+          },
+        ],
+      },
+    },
+  },
 } as const;
 
 /**
